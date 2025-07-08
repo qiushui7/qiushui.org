@@ -2,13 +2,40 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import Marquee from "react-fast-marquee";
+
 
 interface HeroProps {
   isClient: boolean;
 }
 
+function Icon({ src, alt}: { src: string, alt: string }) {
+  return (
+    <Image src={src} alt={alt} width={24} height={24} />
+  )
+}
+
 export default function Hero({ isClient }: HeroProps) {
+  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  
   if (!isClient) return null;
+  
+  const skills = [
+    { name: 'HTML', icon: <Icon src="/html-5.svg" alt="HTML" /> },
+    { name: 'CSS', icon: <Icon src="/css-3.svg" alt="CSS" /> },
+    { name: 'JavaScript', icon: <Icon src="/js.svg" alt="JavaScript" /> },
+    { name: 'TypeScript', icon: <Icon src="/ts.svg" alt="TypeScript" /> },
+    { name: 'React.js', icon: <Icon src="/react.svg" alt="React" /> },
+    { name: 'Vue.js', icon: <Icon src="/vue.svg" alt="Vue.js" /> },
+    { name: 'Next.js', icon: <Icon src="/nextjs.svg" alt="Next.js" /> },
+    { name: 'Node.js', icon: <Icon src="/nodejs.svg" alt="Node.js" /> },
+    { name: 'Nest.js', icon: <Icon src="/nestjs.svg" alt="Nest.js" /> },
+    { name: 'Tailwind', icon: <Icon src="/tailwind.svg" alt="Tailwind" /> },
+    { name: 'PostgreSQL', icon: <Icon src="/postgresql.svg" alt="PostgreSQL" /> },
+    { name: 'Docker', icon: <Icon src="/docker.svg" alt="Docker" /> },
+    { name: 'AWS', icon: <Icon src="/aws.svg" alt="AWS" /> },
+  ];
 
   return (
     <section className="mb-20">
@@ -33,27 +60,13 @@ export default function Hero({ isClient }: HeroProps) {
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">DIGITAL</span>
                 <span className="block">EXPERIENCES</span>
               </h1>
-              
-              {/* <p className="text-base sm:text-lg lg:text-xl text-gray-400 leading-relaxed max-w-2xl">
-                我专注于创建令人印象深刻的数字体验，结合创新技术与优雅设计，
-                为用户打造独特而有意义的产品。
-              </p> */}
             </div>
 
-            {/* 统计数据 */}
-            <div className="flex flex-wrap gap-6 lg:gap-8">
-              <div className="space-y-1">
-                <div className="text-2xl lg:text-3xl font-bold">50+</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Projects</div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-2xl lg:text-3xl font-bold">3+</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Years Exp</div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-2xl lg:text-3xl font-bold">100%</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Satisfaction</div>
-              </div>
+            {/* 引用文字 */}
+            <div className="py-4">
+              <blockquote className="text-lg lg:text-xl text-gray-300 italic border-l-2 border-white/30 pl-6">
+                &ldquo;Slow production defeats crazy internal competition&rdquo;
+              </blockquote>
             </div>
 
             {/* 行动按钮 */}
@@ -111,32 +124,39 @@ export default function Hero({ isClient }: HeroProps) {
           </motion.div>
         </div>
 
-        {/* 技能标签云 */}
+        {/* 技能标签走马灯 */}
         <motion.div 
-          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-20"
+          className="mb-20"
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
         >
-          {[
-            'React','Vue.js', 'Next.js', 'TypeScript', 'Node.js', 'Python', 
-            'Tailwind', 'PostgreSQL', 'MongoDB',
-            'Docker', 'AWS', 'Figma'
-          ].map((skill, index) => (
-            <motion.span
-              key={skill}
-              className="skill-tag px-3 sm:px-4 py-2 bg-white/5 border border-white/10 text-xs sm:text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-150 cursor-default"
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ 
-                duration: 0.3, 
-                delay: 0.1 + index * 0.02, 
-                ease: "easeOut" 
-              }}
-            >
-              {skill}
-            </motion.span>
-          ))}
+          <Marquee
+            speed={40}
+            pauseOnHover={true}
+            className="py-4"
+          >
+            {skills.map((skill) => (
+              <motion.span
+                key={skill.name}
+                className="skill-tag px-4 py-2 bg-black/5 border border-white/10 text-sm hover:bg-white/10 hover:text-white transition-all duration-300 cursor-default whitespace-nowrap mx-2 flex items-center gap-2"
+                onMouseEnter={() => setHoveredSkill(skill.name)}
+                onMouseLeave={() => setHoveredSkill(null)}
+                animate={{
+                  opacity: hoveredSkill && hoveredSkill !== skill.name ? 0.3 : 1,
+                  scale: hoveredSkill === skill.name ? 1.1 : 1,
+                  filter: hoveredSkill && hoveredSkill !== skill.name ? "blur(1px)" : "blur(0px)"
+                }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: "easeOut"
+                }}
+              >
+                {skill.icon && <span className="w-6 h-6">{skill.icon}</span>}
+                {skill.name}
+              </motion.span>
+            ))}
+          </Marquee>
         </motion.div>
 
         {/* 滚动提示 */}

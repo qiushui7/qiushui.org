@@ -1,0 +1,97 @@
+---
+title: "Node.js Best Practices for Production"
+date: "2024-01-20"
+author: "Qiushui"
+excerpt: "Essential Node.js best practices to follow when building production-ready applications."
+tags: ["Node.js", "Backend", "Production"]
+---
+
+# Node.js Best Practices for Production
+
+Building robust Node.js applications requires following established best practices. Here's a comprehensive guide to help you build production-ready applications.
+
+## Project Structure
+
+Organize your code with a clear structure:
+
+```
+src/
+  controllers/
+  services/
+  models/
+  middleware/
+  routes/
+  utils/
+  config/
+```
+
+## Error Handling
+
+Always handle errors properly:
+
+```javascript
+// Use try-catch for async/await
+async function getUserData(id) {
+  try {
+    const user = await User.findById(id);
+    return user;
+  } catch (error) {
+    logger.error('Error fetching user:', error);
+    throw new Error('Failed to fetch user data');
+  }
+}
+
+// Global error handler
+app.use((err, req, res, next) => {
+  logger.error(err.stack);
+  res.status(500).json({
+    error: 'Something went wrong!'
+  });
+});
+```
+
+## Environment Configuration
+
+Use environment variables for configuration:
+
+```javascript
+const config = {
+  port: process.env.PORT || 3000,
+  dbUrl: process.env.DATABASE_URL,
+  jwtSecret: process.env.JWT_SECRET,
+  nodeEnv: process.env.NODE_ENV || 'development'
+};
+```
+
+## Security Best Practices
+
+1. **Use HTTPS** in production
+2. **Validate all inputs** with libraries like Joi
+3. **Use helmet.js** for security headers
+4. **Implement rate limiting**
+5. **Keep dependencies updated**
+
+```javascript
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
+app.use(helmet());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
+```
+
+## Performance Optimization
+
+- Use clustering for CPU-intensive tasks
+- Implement caching strategies
+- Optimize database queries
+- Use compression middleware
+
+## Conclusion
+
+Following these best practices will help you build scalable, secure, and maintainable Node.js applications that can handle production workloads effectively. 

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from "react";
-// framer-motion 动画现在在各个组件内部处理
 import Hero from "./components/Hero";
 import CategoryFilter from "./components/CategoryFilter";
 import ProjectGrid from "./components/ProjectGrid";

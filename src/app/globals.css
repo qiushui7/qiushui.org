@@ -206,3 +206,21 @@ body {
     transform: translateY(-30px) translateX(5px) rotate(270deg);
   }
 }
+
+/* 走马灯动画 */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee-slow {
+  animation: marquee 60s linear infinite;
+}

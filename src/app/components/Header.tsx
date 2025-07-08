@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import MobileMenu from './MobileMenu';
 
 export default function Header() {
@@ -51,16 +52,18 @@ export default function Header() {
     >
       <nav className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-6 flex items-center justify-between relative">
         {/* Logo */}
-        <motion.div 
-          className="flex items-center space-x-3"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }}
-        >
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-            <span className="text-black font-bold text-lg">秋</span>
-          </div>
-          <span className="font-bold text-xl tracking-wide">QIUSHUI</span>
-        </motion.div>
+        <Link href="/">
+          <motion.div 
+            className="flex items-center space-x-3 cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+              <span className="text-black font-bold text-lg">秋</span>
+            </div>
+            <span className="font-bold text-xl tracking-wide">QIUSHUI</span>
+          </motion.div>
+        </Link>
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-12">
@@ -71,6 +74,15 @@ export default function Header() {
             transition={{ duration: 0.2 }}
           >
             Work
+            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+          </motion.a>
+          <motion.a 
+            href="/blog" 
+            className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
+            whileHover={{ y: -2 }}
+            transition={{ duration: 0.2 }}
+          >
+            Blog
             <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
           </motion.a>
           <motion.a 
