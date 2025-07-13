@@ -67,42 +67,36 @@ export default function Header() {
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-12">
-          <motion.a 
-            href="#" 
-            className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
-            whileHover={{ y: -2 }}
-            transition={{ duration: 0.2 }}
-          >
-            Work
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
-          </motion.a>
-          <motion.a 
-            href="/blog" 
-            className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
-            whileHover={{ y: -2 }}
-            transition={{ duration: 0.2 }}
-          >
-            Blog
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
-          </motion.a>
-          <motion.a 
-            href="#" 
-            className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
-            whileHover={{ y: -2 }}
-            transition={{ duration: 0.2 }}
-          >
-            About
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
-          </motion.a>
-          <motion.a 
-            href="/contact" 
-            className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
-            whileHover={{ y: -2 }}
-            transition={{ duration: 0.2 }}
-          >
-            Contact
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
-          </motion.a>
+          <Link href="/work">
+            <motion.div
+              className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.2 }}
+            >
+              Work
+              <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+            </motion.div>
+          </Link>
+          <Link href="/blog">
+            <motion.div
+              className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.2 }}
+            >
+              Blog
+              <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+            </motion.div>
+          </Link>
+          <Link href="/about">
+            <motion.div
+              className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.2 }}
+            >
+              About
+              <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+            </motion.div>
+          </Link>
         </div>
 
         {/* Right side */}

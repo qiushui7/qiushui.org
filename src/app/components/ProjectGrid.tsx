@@ -23,7 +23,7 @@ export default function ProjectGrid({ projects, isClient }: ProjectGridProps) {
   if (!isClient) return null;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[200px]">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[200px] mb-16">
       {projects.map((project, index) => (
         <motion.div
           key={project.id}
