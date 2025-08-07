@@ -39,7 +39,7 @@ export default function Home() {
       <TurbulenceBackground isClient={isClient} />
       
       {/* 主内容区域 */}
-      <main className="relative z-10 pt-40 px-4 md:px-8 lg:px-12">
+      <main className="relative z-10 px-4 md:px-8 lg:px-12">
         {/* Hero Section */}
         <Hero isClient={isClient} />
 

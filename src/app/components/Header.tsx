@@ -10,7 +10,7 @@ export default function Header() {
 
   useEffect(() => {
     let ticking = false;
-    
+
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
@@ -24,21 +24,21 @@ export default function Header() {
 
     // 监听滚动事件
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // 计算背景透明度：滚动距离越大，透明度越低
   const backgroundOpacity = Math.min(scrollY / 200, 0.95);
-  
+
   // 计算模糊程度
   const blurAmount = Math.min(scrollY / 100, 16);
-  
+
   // 计算阴影强度
   const shadowOpacity = Math.min(scrollY / 300, 0.3);
 
   return (
-    <motion.header 
+    <motion.header
       className="fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300"
       style={{
         backgroundColor: `rgba(0, 0, 0, ${backgroundOpacity})`,
@@ -53,7 +53,7 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-6 flex items-center justify-between relative">
         {/* Logo */}
         <Link href="/">
-          <motion.div 
+          <motion.div
             className="flex items-center space-x-3 cursor-pointer"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
@@ -64,39 +64,26 @@ export default function Header() {
             <span className="font-bold text-xl tracking-wide">QIUSHUI</span>
           </motion.div>
         </Link>
-        
+
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-12">
-          <Link href="/work">
-            <motion.div
-              className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
-              whileHover={{ y: -2 }}
-              transition={{ duration: 0.2 }}
-            >
-              Work
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
-            </motion.div>
-          </Link>
-          <Link href="/blog">
-            <motion.div
-              className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
-              whileHover={{ y: -2 }}
-              transition={{ duration: 0.2 }}
-            >
-              Blog
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
-            </motion.div>
-          </Link>
-          <Link href="/about">
-            <motion.div
-              className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
-              whileHover={{ y: -2 }}
-              transition={{ duration: 0.2 }}
-            >
-              About
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
-            </motion.div>
-          </Link>
+          {[
+            { href: '/', label: 'Home' },
+            { href: '/work', label: 'Work' },
+            { href: '/blog', label: 'Blog' },
+            { href: '/about', label: 'About' }
+          ].map(({ href, label }) => (
+            <Link key={href} href={href}>
+              <motion.div
+                className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.2 }}
+              >
+                {label}
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+              </motion.div>
+            </Link>
+          ))}
         </div>
 
         {/* Right side */}
@@ -109,7 +96,7 @@ export default function Header() {
           </div>
 
           {/* Let's Talk Button */}
-          <motion.button 
+          <motion.button
             className="hidden md:block border border-white/30 text-white px-6 py-2 text-sm uppercase tracking-wide hover:bg-white hover:text-black transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -117,7 +104,7 @@ export default function Header() {
           >
             Let&apos;s Talk
           </motion.button>
-          
+
           {/* Mobile Menu Component */}
           <MobileMenu />
         </div>
