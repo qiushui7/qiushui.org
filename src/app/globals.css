@@ -59,49 +59,6 @@ body {
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* 网格布局优化 */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* 响应式网格项目大小 */
-.grid-item-large {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-.grid-item-medium {
-  grid-row: span 2;
-}
-
-.grid-item-small {
-  grid-row: span 1;
-}
-
-@media (max-width: 767px) {
-  .grid-item-large,
-  .grid-item-medium,
-  .grid-item-small {
-    grid-column: span 1;
-    grid-row: span 1;
-  }
-}
-
 /* 卡片背景渐变效果 */
 .project-card {
   background: linear-gradient(135deg, rgba(30, 30, 30, 0.9) 0%, rgba(20, 20, 20, 0.9) 100%);
@@ -223,4 +180,27 @@ body {
 
 .animate-marquee-slow {
   animation: marquee 60s linear infinite;
+}
+
+/* Shiki code block styles */
+.shiki-container {
+  position: relative;
+}
+
+.shiki {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  background: var(--shiki-dark-bg, #0d1117) !important;
+}
+
+.shiki code {
+  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  background: transparent !important;
+}
+
+/* Highlighted lines */
+.shiki .line.highlighted {
+  background-color: rgba(255, 255, 255, 0.152);
 }

@@ -3,18 +3,10 @@
 import { motion } from "framer-motion";
 import ProfileCard from "@/app/components/profile-card/index";
 import ExperienceTimeline from "@/app/components/ExperienceTimeline";
-import TurbulenceBackground from "../components/TurbulenceBackground";
-import { useState, useEffect } from "react";
 
 export default function AboutPage() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
   return (
-    <div className="bg-black text-white relative min-h-screen overflow-hidden">
-      <TurbulenceBackground isClient={isClient} />
+    <div className="text-white relative min-h-screen overflow-hidden">
       <main className="relative z-10 px-4 md:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl" >
 

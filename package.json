@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -rf .next node_modules/.cache",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
@@ -15,15 +17,18 @@
     "framer-motion": "^12.18.1",
     "gray-matter": "^4.0.3",
     "next": "15.3.4",
+    "next-mdx-remote": "^5.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-fast-marquee": "^1.6.5",
     "remark": "^15.0.1",
     "remark-frontmatter": "^5.0.0",
-    "remark-html": "^16.0.1"
+    "remark-html": "^16.0.1",
+    "shiki": "^3.9.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@shikijs/transformers": "^3.9.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

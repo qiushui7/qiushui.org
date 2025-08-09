@@ -13,6 +13,7 @@ export interface BlogPost {
   excerpt: string;
   tags: string[];
   content: string;
+  location?: string;
 }
 
 export interface BlogCategory {
@@ -57,10 +58,11 @@ export function getPostsByCategory(category: string): BlogPost[] {
         category,
         title: data.title || slug,
         date: data.date || '',
-        author: data.author || '',
+        author: data.author || 'qiushui',
         excerpt: data.excerpt || '',
         tags: data.tags || [],
         content,
+        location: data.location,
       };
     });
 
@@ -103,10 +105,11 @@ export function getPostBySlug(category: string, slug: string): BlogPost | null {
       category,
       title: data.title || slug,
       date: data.date || '',
-      author: data.author || '',
+      author: data.author || 'qiushui',
       excerpt: data.excerpt || '',
       tags: data.tags || [],
       content,
+      location: data.location,
     };
   } catch (error) {
     console.error(`Error reading post ${category}/${slug}:`, error);

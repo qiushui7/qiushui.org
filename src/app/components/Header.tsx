@@ -69,7 +69,7 @@ export default function Header() {
         <div className="hidden md:flex items-center space-x-12">
           {[
             { href: '/', label: 'Home' },
-            { href: '/work', label: 'Work' },
+            // { href: '/work', label: 'Work' },
             { href: '/blog', label: 'Blog' },
             { href: '/about', label: 'About' }
           ].map(({ href, label }) => (
@@ -89,11 +89,11 @@ export default function Header() {
         {/* Right side */}
         <div className="flex items-center space-x-6">
           {/* Language Switcher */}
-          <div className="hidden md:flex items-center space-x-2 text-xs text-white/50">
+          {/* <div className="hidden md:flex items-center space-x-2 text-xs text-white/50">
             <span>EN</span>
             <span>/</span>
             <span className="text-white">中文</span>
-          </div>
+          </div> */}
 
           {/* Let's Talk Button */}
           <motion.button
