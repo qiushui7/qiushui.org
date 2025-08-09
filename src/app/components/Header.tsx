@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import MobileMenu from './MobileMenu';
 
 export default function Header() {
   const [scrollY, setScrollY] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     let ticking = false;
@@ -28,14 +30,20 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 计算背景透明度：滚动距离越大，透明度越低
-  const backgroundOpacity = Math.min(scrollY / 200, 0.95);
+  // 计算背景透明度：滚动距离越大，透明度越低，移动菜单打开时透明度更低
+  const baseOpacity = Math.min(scrollY / 200, 0.95);
+  const backgroundOpacity = isMobileMenuOpen ? Math.max(baseOpacity, 0.98) : baseOpacity;
 
   // 计算模糊程度
   const blurAmount = Math.min(scrollY / 100, 16);
 
   // 计算阴影强度
   const shadowOpacity = Math.min(scrollY / 300, 0.3);
+
+  // 处理联系按钮点击
+  const handleContactClick = () => {
+    window.location.href = 'mailto:qiushui030716@gamil.com';
+  };
 
   return (
     <motion.header
@@ -52,14 +60,20 @@ export default function Header() {
     >
       <nav className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-6 flex items-center justify-between relative">
         {/* Logo */}
-        <Link href="/">
+        <Link href="https://github.com/qiushui7" target="_blank">
           <motion.div
             className="flex items-center space-x-3 cursor-pointer"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-              <span className="text-black font-bold text-lg">秋</span>
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20">
+              <Image
+                src="/ava-1.png"
+                alt="Qiushui Avatar"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="font-bold text-xl tracking-wide">QIUSHUI</span>
           </motion.div>
@@ -95,18 +109,22 @@ export default function Header() {
             <span className="text-white">中文</span>
           </div> */}
 
-          {/* Let's Talk Button */}
+          {/* Contact Button */}
           <motion.button
             className="hidden md:block border border-white/30 text-white px-6 py-2 text-sm uppercase tracking-wide hover:bg-white hover:text-black transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
+            onClick={handleContactClick}
           >
-            Let&apos;s Talk
+            CONTACT ME
           </motion.button>
 
           {/* Mobile Menu Component */}
-          <MobileMenu />
+          <MobileMenu 
+            isMenuOpen={isMobileMenuOpen}
+            setIsMenuOpen={setIsMobileMenuOpen}
+          />
         </div>
       </nav>
     </motion.header>

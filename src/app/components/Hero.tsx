@@ -72,11 +72,11 @@ export default function Hero({ isClient }: HeroProps) {
 
             {/* 行动按钮 */}
             <div className="flex flex-wrap gap-4">
-                <button className="bg-white text-black px-6 lg:px-8 py-3 text-sm uppercase tracking-wide hover:bg-gray-200 transition-colors duration-150">
-                  <Link href="/blog">
+              <button className="bg-white text-black px-6 lg:px-8 py-3 text-sm uppercase tracking-wide hover:bg-gray-200 transition-colors duration-150">
+                <Link href="/blog">
                   View My Blog
-                  </Link>
-                </button>
+                </Link>
+              </button>
               <button className="border border-white/30 text-white px-6 lg:px-8 py-3 text-sm uppercase tracking-wide hover:bg-white hover:text-black transition-all duration-150">
                 Get In Touch
               </button>

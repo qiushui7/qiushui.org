@@ -1,14 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 
-export default function MobileMenu() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+interface MobileMenuProps {
+  isMenuOpen: boolean;
+  setIsMenuOpen: (isOpen: boolean) => void;
+}
+
+export default function MobileMenu({ isMenuOpen, setIsMenuOpen }: MobileMenuProps) {
+
+  // 处理联系按钮点击
+  const handleContactClick = () => {
+    window.location.href = 'mailto:qiushui030716@gamil.com';
+    setIsMenuOpen(false); // 关闭菜单
+  };
 
   return (
     <div className="md:hidden">
       {/* Mobile Menu Button */}
-      <button 
+      <button
         className="text-white p-2"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label="Toggle mobile menu"
@@ -22,14 +32,25 @@ export default function MobileMenu() {
 
       {/* Mobile Menu */}
       <div className={`absolute top-full left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/10 transition-all duration-300 ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-        <div className="px-4 py-8 space-y-6">
-          <a href="#" className="block text-lg text-white/80 hover:text-white transition-colors duration-300 uppercase tracking-wide">Work</a>
-          <a href="#" className="block text-lg text-white/80 hover:text-white transition-colors duration-300 uppercase tracking-wide">About</a>
-          <a href="#" className="block text-lg text-white/80 hover:text-white transition-colors duration-300 uppercase tracking-wide">Contact</a>
-          
+        <div className="px-4 py-4 space-y-6">
+          {[
+            { href: '/', label: 'Home' },
+            { href: '/blog', label: 'Blog' },
+            { href: '/about', label: 'About' }
+          ].map(({ href, label }) => (
+            <Link key={href} href={href} onClick={() => setIsMenuOpen(false)}>
+              <div className="block text-lg text-white transition-colors duration-300 uppercase tracking-wide">
+                {label}
+              </div>
+            </Link>
+          ))}
+
           <div className="pt-4 border-t border-white/10">
-            <button className="w-full border border-white/30 text-white py-3 text-sm uppercase tracking-wide hover:bg-white hover:text-black transition-all duration-300">
-              Let&apos;s Talk
+            <button
+              className="w-full border border-white/30 text-white py-3 text-sm uppercase tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+              onClick={handleContactClick}
+            >
+              CONTACT ME
             </button>
           </div>
         </div>
