@@ -58,7 +58,6 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   iconUrl = "<Placeholder for icon URL>",
   grainUrl = "<Placeholder for grain URL>",
   behindGradient,
-  innerGradient,
   showBehindGradient = true,
   className = "",
   enableTilt = true,
@@ -259,7 +258,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
       if (width || height) {
         const cardWidth = typeof width === 'number' ? `${width}px` : width;
         const cardHeight = typeof height === 'number' ? `${height}px` : height;
-        
+
         if (width) {
           style.width = cardWidth;
         }
@@ -271,7 +270,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
       return style;
     },
-    [iconUrl, grainUrl, showBehindGradient, behindGradient, innerGradient, width, height]
+    [iconUrl, grainUrl, showBehindGradient, behindGradient, width, height]
   );
 
   const handleContactClick = useCallback(() => {

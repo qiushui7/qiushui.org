@@ -77,9 +77,9 @@ export default function Hero({ isClient }: HeroProps) {
                   View My Blog
                 </Link>
               </button>
-              <button className="border border-white/30 text-white px-6 lg:px-8 py-3 text-sm uppercase tracking-wide hover:bg-white hover:text-black transition-all duration-150">
+              {/* <button className="border border-white/30 text-white px-6 lg:px-8 py-3 text-sm uppercase tracking-wide hover:bg-white hover:text-black transition-all duration-150">
                 Get In Touch
-              </button>
+              </button> */}
             </div>
           </motion.div>
 

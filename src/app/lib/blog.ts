@@ -2,6 +2,20 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
+// Load views data
+function getViewsData(): Record<string, number> {
+  try {
+    const viewsPath = path.join(process.cwd(), 'data/views.json');
+    if (fs.existsSync(viewsPath)) {
+      const viewsData = fs.readFileSync(viewsPath, 'utf8');
+      return JSON.parse(viewsData);
+    }
+  } catch (error) {
+    console.error('Error reading views data:', error);
+  }
+  return {};
+}
+
 const blogDirectory = path.join(process.cwd(), 'src/blog');
 
 export interface BlogPost {
@@ -14,6 +28,7 @@ export interface BlogPost {
   tags: string[];
   content: string;
   location?: string;
+  views?: number;
 }
 
 export interface BlogCategory {
@@ -47,11 +62,16 @@ export function getPostsByCategory(category: string): BlogPost[] {
     const fileNames = fs.readdirSync(categoryPath)
       .filter(name => name.endsWith('.mdx'));
 
+    const viewsData = getViewsData();
+
     const posts = fileNames.map(fileName => {
       const slug = fileName.replace(/\.mdx$/, '');
       const fullPath = path.join(categoryPath, fileName);
       const fileContents = fs.readFileSync(fullPath, 'utf8');
       const { data, content } = matter(fileContents);
+
+      const postKey = `${category}/${slug}`;
+      const views = viewsData[postKey] || 0;
 
       return {
         slug,
@@ -63,6 +83,7 @@ export function getPostsByCategory(category: string): BlogPost[] {
         tags: data.tags || [],
         content,
         location: data.location,
+        views,
       };
     });
 
@@ -100,6 +121,10 @@ export function getPostBySlug(category: string, slug: string): BlogPost | null {
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
 
+    const viewsData = getViewsData();
+    const postKey = `${category}/${slug}`;
+    const views = viewsData[postKey] || 0;
+
     return {
       slug,
       category,
@@ -110,6 +135,7 @@ export function getPostBySlug(category: string, slug: string): BlogPost | null {
       tags: data.tags || [],
       content,
       location: data.location,
+      views,
     };
   } catch (error) {
     console.error(`Error reading post ${category}/${slug}:`, error);
