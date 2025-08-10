@@ -16,12 +16,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "qiushui - 个人博客",
-  description: "技术创新者 · 产品开发者 · 开源贡献者的个人博客，分享编程技术、产品思考和开发经验",
-  keywords: ["个人博客", "技术博客", "前端开发", "产品开发", "开源项目"],
+  title: "qiushui - Personal Blog",
+  description: "Technical innovator · Product developer · Open source contributor's personal blog, sharing programming techniques, product insights and development experience",
+  keywords: ["personal blog", "tech blog", "frontend development", "product development", "open source projects"],
   authors: [{ name: "qiushui" }],
   creator: "qiushui",
   publisher: "qiushui",
+  icons: {
+    icon: [
+      {
+        url: "/ava.jpg",
+        sizes: "32x32",
+        type: "image/jpeg"
+      }
+    ],
+    apple: [
+      {
+        url: "/ava.jpg",
+        sizes: "180x180",
+        type: "image/jpeg"
+      }
+    ]
+  }
 };
 
 export default function RootLayout({
