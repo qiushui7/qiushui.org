@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
-// GET - 获取所有浏览量数据
+// GET
 export async function GET() {
   try {
     const { data, error } = await supabase
@@ -15,8 +15,7 @@ export async function GET() {
         { status: 500 }
       );
     }
-    
-    // 转换为原来的格式 { "post_id": views }
+
     const viewsMap: Record<string, number> = {};
     data?.forEach(item => {
       viewsMap[item.post_id] = item.views;

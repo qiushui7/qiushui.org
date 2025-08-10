@@ -1,31 +1,31 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { supabase } from './supabase';
+// import { supabase } from './supabase';
 
 // Load views data from Supabase
-async function getViewsData(): Promise<Record<string, number>> {
-  try {
-    const { data, error } = await supabase
-      .from('post_views')
-      .select('post_id, views');
+// async function getViewsData(): Promise<Record<string, number>> {
+//   try {
+//     const { data, error } = await supabase
+//       .from('post_views')
+//       .select('post_id, views');
     
-    if (error) {
-      console.error('Error reading views data from Supabase:', error);
-      return {};
-    }
+//     if (error) {
+//       console.error('Error reading views data from Supabase:', error);
+//       return {};
+//     }
     
-    const viewsMap: Record<string, number> = {};
-    data?.forEach(item => {
-      viewsMap[item.post_id] = item.views;
-    });
+//     const viewsMap: Record<string, number> = {};
+//     data?.forEach(item => {
+//       viewsMap[item.post_id] = item.views;
+//     });
     
-    return viewsMap;
-  } catch (error) {
-    console.error('Error reading views data:', error);
-    return {};
-  }
-}
+//     return viewsMap;
+//   } catch (error) {
+//     console.error('Error reading views data:', error);
+//     return {};
+//   }
+// }
 
 const blogDirectory = path.join(process.cwd(), 'src/blog');
 
@@ -73,16 +73,11 @@ export async function getPostsByCategory(category: string): Promise<BlogPost[]> 
     const fileNames = fs.readdirSync(categoryPath)
       .filter(name => name.endsWith('.mdx'));
 
-    const viewsData = await getViewsData();
-
     const posts = fileNames.map(fileName => {
       const slug = fileName.replace(/\.mdx$/, '');
       const fullPath = path.join(categoryPath, fileName);
       const fileContents = fs.readFileSync(fullPath, 'utf8');
       const { data, content } = matter(fileContents);
-
-      const postKey = `${category}/${slug}`;
-      const views = viewsData[postKey] || 0;
 
       return {
         slug,
@@ -94,7 +89,7 @@ export async function getPostsByCategory(category: string): Promise<BlogPost[]> 
         tags: data.tags || [],
         content,
         location: data.location,
-        views,
+        views: 0,
       };
     });
 
@@ -132,10 +127,6 @@ export async function getPostBySlug(category: string, slug: string): Promise<Blo
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
 
-    const viewsData = await getViewsData();
-    const postKey = `${category}/${slug}`;
-    const views = viewsData[postKey] || 0;
-
     return {
       slug,
       category,
@@ -146,7 +137,7 @@ export async function getPostBySlug(category: string, slug: string): Promise<Blo
       tags: data.tags || [],
       content,
       location: data.location,
-      views,
+      views: 0,
     };
   } catch (error) {
     console.error(`Error reading post ${category}/${slug}:`, error);
