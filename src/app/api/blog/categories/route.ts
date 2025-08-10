@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { getBlogCategories, getBlogStats } from '@/app/lib/blog';
+import { getBlogCategories, getBlogStats } from '@/lib/blog';
 
 export async function GET() {
   try {
     const categories = getBlogCategories();
-    const stats = getBlogStats();
+    const stats = await getBlogStats();
     
     return NextResponse.json({
       success: true,

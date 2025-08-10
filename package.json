@@ -8,12 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next node_modules/.cache",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "migrate-views": "node scripts/migrate-views.js"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.3.4",
+    "@supabase/supabase-js": "^2.54.0",
     "framer-motion": "^12.18.1",
     "gray-matter": "^4.0.3",
     "next": "15.3.4",

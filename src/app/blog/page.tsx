@@ -1,4 +1,4 @@
-import { getAllPosts, getBlogStats } from '@/app/lib/blog';
+import { getAllPosts, getBlogStats } from '@/lib/blog';
 import BlogPageClient from './BlogPageClient';
 
 export const metadata = {
@@ -6,9 +6,9 @@ export const metadata = {
   description: 'Thoughts, tutorials, and insights about web development',
 };
 
-export default function BlogPage() {
-  const posts = getAllPosts();
-  const stats = getBlogStats();
+export default async function BlogPage() {
+  const posts = await getAllPosts();
+  const stats = await getBlogStats();
 
   const blogData = {
     posts,

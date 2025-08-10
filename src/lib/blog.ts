@@ -1,19 +1,30 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { supabase } from './supabase';
 
-// Load views data
-function getViewsData(): Record<string, number> {
+// Load views data from Supabase
+async function getViewsData(): Promise<Record<string, number>> {
   try {
-    const viewsPath = path.join(process.cwd(), 'data/views.json');
-    if (fs.existsSync(viewsPath)) {
-      const viewsData = fs.readFileSync(viewsPath, 'utf8');
-      return JSON.parse(viewsData);
+    const { data, error } = await supabase
+      .from('post_views')
+      .select('post_id, views');
+    
+    if (error) {
+      console.error('Error reading views data from Supabase:', error);
+      return {};
     }
+    
+    const viewsMap: Record<string, number> = {};
+    data?.forEach(item => {
+      viewsMap[item.post_id] = item.views;
+    });
+    
+    return viewsMap;
   } catch (error) {
     console.error('Error reading views data:', error);
+    return {};
   }
-  return {};
 }
 
 const blogDirectory = path.join(process.cwd(), 'src/blog');
@@ -51,7 +62,7 @@ export function getBlogCategories(): string[] {
 }
 
 // Get all posts from a specific category
-export function getPostsByCategory(category: string): BlogPost[] {
+export async function getPostsByCategory(category: string): Promise<BlogPost[]> {
   try {
     const categoryPath = path.join(blogDirectory, category);
     
@@ -62,7 +73,7 @@ export function getPostsByCategory(category: string): BlogPost[] {
     const fileNames = fs.readdirSync(categoryPath)
       .filter(name => name.endsWith('.mdx'));
 
-    const viewsData = getViewsData();
+    const viewsData = await getViewsData();
 
     const posts = fileNames.map(fileName => {
       const slug = fileName.replace(/\.mdx$/, '');
@@ -96,21 +107,21 @@ export function getPostsByCategory(category: string): BlogPost[] {
 }
 
 // Get all posts from all categories
-export function getAllPosts(): BlogPost[] {
+export async function getAllPosts(): Promise<BlogPost[]> {
   const categories = getBlogCategories();
   const allPosts: BlogPost[] = [];
 
-  categories.forEach(category => {
-    const posts = getPostsByCategory(category);
+  for (const category of categories) {
+    const posts = await getPostsByCategory(category);
     allPosts.push(...posts);
-  });
+  }
 
   // Sort by date (newest first)
   return allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 // Get a specific post by category and slug
-export function getPostBySlug(category: string, slug: string): BlogPost | null {
+export async function getPostBySlug(category: string, slug: string): Promise<BlogPost | null> {
   try {
     const fullPath = path.join(blogDirectory, category, `${slug}.mdx`);
     
@@ -121,7 +132,7 @@ export function getPostBySlug(category: string, slug: string): BlogPost | null {
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
 
-    const viewsData = getViewsData();
+    const viewsData = await getViewsData();
     const postKey = `${category}/${slug}`;
     const views = viewsData[postKey] || 0;
 
@@ -144,16 +155,18 @@ export function getPostBySlug(category: string, slug: string): BlogPost | null {
 }
 
 // Get blog statistics
-export function getBlogStats() {
+export async function getBlogStats() {
   const categories = getBlogCategories();
-  const stats = categories.map(category => {
-    const posts = getPostsByCategory(category);
-    return {
+  const stats = [];
+
+  for (const category of categories) {
+    const posts = await getPostsByCategory(category);
+    stats.push({
       name: category,
       count: posts.length,
       posts,
-    };
-  });
+    });
+  }
 
   const totalPosts = stats.reduce((total, category) => total + category.count, 0);
 

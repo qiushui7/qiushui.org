@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { getAllPosts, getBlogStats } from '@/app/lib/blog';
+import { getAllPosts, getBlogStats } from '@/lib/blog';
 
 export async function GET() {
   try {
-    const posts = getAllPosts();
-    const stats = getBlogStats();
+    const posts = await getAllPosts();
+    const stats = await getBlogStats();
     
     return NextResponse.json({
       success: true,

@@ -1,40 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-const VIEWS_FILE = path.join(process.cwd(), 'data', 'views.json');
-
-// 确保数据目录存在
-function ensureDataDir() {
-  const dataDir = path.dirname(VIEWS_FILE);
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-}
-
-// 读取浏览量数据
-function readViews(): Record<string, number> {
-  try {
-    if (!fs.existsSync(VIEWS_FILE)) {
-      return {};
-    }
-    const data = fs.readFileSync(VIEWS_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading views file:', error);
-    return {};
-  }
-}
-
-// 写入浏览量数据
-function writeViews(views: Record<string, number>) {
-  try {
-    ensureDataDir();
-    fs.writeFileSync(VIEWS_FILE, JSON.stringify(views, null, 2));
-  } catch (error) {
-    console.error('Error writing views file:', error);
-  }
-}
+import { supabase } from '@/lib/supabase';
 
 // GET - 获取浏览量
 export async function GET(
@@ -44,11 +9,24 @@ export async function GET(
   try {
     const { postId } = await params;
     const decodedPostId = decodeURIComponent(postId);
-    const views = readViews();
+    
+    const { data, error } = await supabase
+      .from('post_views')
+      .select('views')
+      .eq('post_id', decodedPostId)
+      .single();
+    
+    if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
+      console.error('Error getting views:', error);
+      return NextResponse.json(
+        { error: 'Failed to get views' },
+        { status: 500 }
+      );
+    }
     
     return NextResponse.json({
       postId: decodedPostId,
-      views: views[decodedPostId] || 0
+      views: data?.views || 0
     });
   } catch (error) {
     console.error('Error getting views:', error);
@@ -67,16 +45,56 @@ export async function POST(
   try {
     const { postId } = await params;
     const decodedPostId = decodeURIComponent(postId);
-    const views = readViews();
     
-    // 增加浏览量
-    views[decodedPostId] = (views[decodedPostId] || 0) + 1;
-    writeViews(views);
-    
-    return NextResponse.json({
-      postId: decodedPostId,
-      views: views[decodedPostId]
-    });
+    // 首先尝试获取现有记录
+    const { data: existingData } = await supabase
+      .from('post_views')
+      .select('views')
+      .eq('post_id', decodedPostId)
+      .single();
+
+    if (existingData) {
+      // 如果记录存在，增加计数
+      const { data, error } = await supabase
+        .from('post_views')
+        .update({ views: existingData.views + 1 })
+        .eq('post_id', decodedPostId)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error updating views:', error);
+        return NextResponse.json(
+          { error: 'Failed to update views' },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({
+        postId: decodedPostId,
+        views: data.views
+      });
+    } else {
+      // 如果记录不存在，创建新记录
+      const { data, error } = await supabase
+        .from('post_views')
+        .insert({ post_id: decodedPostId, views: 1 })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error creating views record:', error);
+        return NextResponse.json(
+          { error: 'Failed to create views record' },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({
+        postId: decodedPostId,
+        views: data.views
+      });
+    }
   } catch (error) {
     console.error('Error incrementing views:', error);
     return NextResponse.json(

@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getPostBySlug, getBlogCategories, getPostsByCategory } from '@/app/lib/blog';
+import { getPostBySlug, getBlogCategories, getPostsByCategory } from '@/lib/blog';
 import BlogPostClient from './BlogPostClient';
 import MDXContent from '@/app/components/MDXContent';
 
@@ -15,15 +15,15 @@ export async function generateStaticParams() {
   const categories = getBlogCategories();
   const params: { category: string; slug: string }[] = [];
 
-  categories.forEach(category => {
-    const posts = getPostsByCategory(category);
+  for (const category of categories) {
+    const posts = await getPostsByCategory(category);
     posts.forEach(post => {
       params.push({
         category,
         slug: post.slug,
       });
     });
-  });
+  }
 
   return params;
 }
@@ -31,7 +31,7 @@ export async function generateStaticParams() {
 // Generate metadata for SEO
 export async function generateMetadata({ params }: BlogPostPageProps) {
   const { category, slug } = await params;
-  const post = getPostBySlug(category, slug);
+  const post = await getPostBySlug(category, slug);
 
   if (!post) {
     return {
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { category, slug } = await params;
-  const post = getPostBySlug(category, slug);
+  const post = await getPostBySlug(category, slug);
 
   if (!post) {
     notFound();

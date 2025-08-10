@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BlogPost } from '@/app/lib/blog';
+import { BlogPost } from '@/lib/blog';
 import { ReactNode, useState, useEffect } from 'react';
 import ViewCounter from '@/app/components/ViewCounter';
 
