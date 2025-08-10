@@ -187,10 +187,9 @@
   width: 100%;
   position: absolute;
   left: 50%;
-  transform: translateX(-50%) scale(1);
+  transform: translateX(-50%) scale(1) scale3d(0.9, 0.9, 1);
   bottom: 2px;
   opacity: calc(1.75 - var(--pointer-from-center));
-  scale: 0.9;
 }
 
 .pc-avatar-content::before {
@@ -244,7 +243,6 @@
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  scale: 1.1;
 }
 
 .pc-user-text {

@@ -21,7 +21,8 @@ export default function AboutPage() {
             >
               <div className="w-80 lg: mt-30">
                 <ProfileCard
-                  avatarUrl="/id-photo-no-bg.png"
+                  avatarUrl="/photo-no-bg.png"
+                  miniAvatarUrl="/ava.jpg"
                   iconUrl="/iconpattern.png"
                   grainUrl="/grain.webp"
                   name="Benjamin"
