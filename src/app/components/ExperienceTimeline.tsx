@@ -39,18 +39,22 @@ const ExperienceTimeline = () => {
     <div className="h-full flex flex-col">
       {/* 标题 - 固定高度 */}
       <motion.div
-        className="flex-shrink-0 mb-8"
+        className="flex-shrink-0 mb-8 flex justify-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="flex items-center space-x-3 mb-2">
-          <span className="w-12 h-px bg-white/30"></span>
-          <span className="text-sm text-gray-400 uppercase tracking-widest">Experience</span>
+        <div className="flex flex-col">
+          <div className="flex items-center space-x-3 mb-2">
+            <span className="w-12 h-px bg-white/30"></span>
+            <span className="text-sm text-gray-400 uppercase tracking-widest">Experience</span>
+          </div>
+          <div className="flex">
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+              Professional Journey
+            </h2>
+          </div>
         </div>
-        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
-          Professional Journey
-        </h2>
       </motion.div>
       
       {/* 时间线容器 - 自适应高度 */}

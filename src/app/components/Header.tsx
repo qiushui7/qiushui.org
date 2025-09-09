@@ -84,8 +84,7 @@ export default function Header() {
           {[
             { href: '/', label: 'Home' },
             // { href: '/work', label: 'Work' },
-            { href: '/blog', label: 'Blog' },
-            { href: '/about', label: 'About' }
+            { href: '/blog', label: 'Blog' }
           ].map(({ href, label }) => (
             <Link key={href} href={href}>
               <motion.div

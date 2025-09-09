@@ -35,8 +35,7 @@ export default function MobileMenu({ isMenuOpen, setIsMenuOpen }: MobileMenuProp
         <div className="px-4 py-4 space-y-6">
           {[
             { href: '/', label: 'Home' },
-            { href: '/blog', label: 'Blog' },
-            { href: '/about', label: 'About' }
+            { href: '/blog', label: 'Blog' }
           ].map(({ href, label }) => (
             <Link key={href} href={href} onClick={() => setIsMenuOpen(false)}>
               <div className="block text-lg text-white transition-colors duration-300 uppercase tracking-wide">
