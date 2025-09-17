@@ -58,7 +58,7 @@ const ExperienceTimeline = () => {
       </motion.div>
       
       {/* 时间线容器 - 自适应高度 */}
-      <div className="flex-1 relative overflow-x-hidden overflow-y-auto pr-3">
+      <div className="flex-1 relative overflow-x-hidden overflow-y-auto pr-3 show-scrollbar">
         {/* 经历项目 */}
         <div className="space-y-12 pt-2 pb-8 relative">
           {/* 主时间线 - 放在内容容器内以覆盖全部内容高度 */}

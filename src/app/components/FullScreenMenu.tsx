@@ -1,0 +1,135 @@
+'use client';
+
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import { useEffect } from 'react';
+
+interface FullScreenMenuProps {
+  isMenuOpen: boolean;
+  setIsMenuOpen: (isOpen: boolean) => void;
+}
+
+export default function FullScreenMenu({ isMenuOpen, setIsMenuOpen }: FullScreenMenuProps) {
+  const handleContactClick = () => {
+    window.location.href = 'mailto:qiushui030716@gmail.com';
+    setIsMenuOpen(false);
+  };
+
+  const menuItems = [
+    { href: '/', label: 'Home' },
+    { href: '/blog', label: 'Blog' }
+  ];
+
+  // 禁用/启用滚动
+  useEffect(() => {
+    if (isMenuOpen) {
+      // 禁用滚动
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      // 恢复滚动
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+
+    // 清理函数
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
+  return (
+    <AnimatePresence>
+      {isMenuOpen && (
+        <motion.div
+          className="fixed inset-0 z-40 bg-black/95 backdrop-blur-md"
+          initial={{ opacity: 0, y: "-100%" }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: "-100%" }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
+          {/* 关闭按钮 */}
+          <motion.button
+            className="absolute top-8 right-8 z-50 text-white hover:text-gray-300 transition-colors"
+            initial={{ opacity: 0, scale: 0, rotate: -90 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            onClick={() => setIsMenuOpen(false)}
+            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <div className="w-8 h-8 flex items-center justify-center">
+              <div className="relative w-6 h-6">
+                <div className="w-6 h-0.5 bg-current rotate-45 absolute top-1/2 left-0 -translate-y-1/2"></div>
+                <div className="w-6 h-0.5 bg-current -rotate-45 absolute top-1/2 left-0 -translate-y-1/2"></div>
+              </div>
+            </div>
+          </motion.button>
+
+          <div className="min-h-screen flex items-center justify-center">
+            <motion.div
+              className="text-center space-y-8"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              transition={{
+                duration: 0.3,
+                ease: "linear"
+              }}
+            >
+              {/* 菜单项 */}
+              <div className="space-y-6">
+                {menuItems.map(({ href, label }, index) => (
+                  <motion.div
+                    key={href}
+                    initial={{ opacity: 0, y: 30, rotateX: -45 }}
+                    animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: 0.1 + index * 0.1,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <Link href={href} onClick={() => setIsMenuOpen(false)}>
+                      <motion.div
+                        className="text-4xl md:text-6xl font-bold text-white uppercase tracking-wide hover:text-gray-300 transition-colors duration-300 relative group"
+                        whileHover={{ scale: 1.05, y: -5 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {label}
+                        <motion.div
+                          className="absolute bottom-0 left-1/2 w-0 h-1 bg-white"
+                          whileHover={{ width: "100%", x: "-50%" }}
+                          transition={{ duration: 0.3 }}
+                        />
+                      </motion.div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* 联系按钮 */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
+                className="pt-8"
+              >
+                <motion.button
+                  className="border-2 border-white text-white px-8 py-4 text-lg uppercase tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleContactClick}
+                >
+                  Contact Me
+                </motion.button>
+              </motion.div>
+
+            </motion.div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

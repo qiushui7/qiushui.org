@@ -13,6 +13,9 @@ export default function Home() {
     setIsClient(true);
   }, []);
 
+  const handleContactClick = () => {
+    window.location.href = 'mailto:qiushui030716@gmail.com';
+  };
 
   if (!isClient) {
     return <div className="min-h-screen bg-black" />;
@@ -45,6 +48,7 @@ export default function Home() {
                   status="Online"
                   showUserInfo={true}
                   enableTilt={true}
+                  onContactClick={handleContactClick}
                 />
               </div>
             </motion.div>
