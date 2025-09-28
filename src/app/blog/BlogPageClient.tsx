@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BlogPost } from '@/lib/blog';
-import BlogPostsWithViews from '@/app/components/BlogPostsWithViews';
+import BlogPostsWithViews from '@/components/BlogPostsWithViews';
 
 interface BlogData {
   posts: BlogPost[];

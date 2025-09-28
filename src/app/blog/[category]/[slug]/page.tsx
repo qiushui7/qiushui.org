@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getBlogCategories, getPostsByCategory } from '@/lib/blog';
 import BlogPostClient from './BlogPostClient';
-import MDXContent from '@/app/components/MDXContent';
+import MDXContent from '@/components/MDXContent';
 
 interface BlogPostPageProps {
   params: Promise<{

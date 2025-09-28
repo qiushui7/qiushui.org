@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BlogPost } from '@/lib/blog';
 import { ReactNode, useState, useEffect } from 'react';
-import ViewCounter from '@/app/components/ViewCounter';
+import ViewCounter from '@/components/ViewCounter';
 
 interface BlogPostClientProps {
     post: BlogPost;

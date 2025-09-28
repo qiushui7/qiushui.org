@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import Hero from "./components/Hero";
+import Hero from "../components/Hero";
 import { motion } from "framer-motion";
-import ProfileCard from "./components/profile-card";
-import ExperienceTimeline from "./components/ExperienceTimeline";
+import ProfileCard from "../components/profile-card";
+import ExperienceTimeline from "../components/ExperienceTimeline";
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
