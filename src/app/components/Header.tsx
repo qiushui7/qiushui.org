@@ -104,7 +104,7 @@ export default function Header() {
         </Link>
 
         {/* Right side */}
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center">
           {/* Language Switcher */}
           {/* <div className="hidden md:flex items-center space-x-2 text-xs text-white/50">
             <span>EN</span>
