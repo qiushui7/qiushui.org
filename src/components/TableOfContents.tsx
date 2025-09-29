@@ -15,6 +15,7 @@ interface TableOfContentsProps {
 export default function TableOfContents({ className = '' }: TableOfContentsProps) {
   const [toc, setToc] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState<string>('');
+  const [isWheelEvent, setIsWheelEvent] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -48,14 +49,23 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
+        if (isWheelEvent) return;
+        // 获取所有 intersecting 的标题
+        const visibleHeadings = entries
+          .filter(entry => entry.isIntersecting)
+          .map(entry => ({
+            id: entry.target.id,
+            top: entry.boundingClientRect.top
+          }))
+          .sort((a, b) => a.top - b.top); // 按距离顶部的距离排序
+          
+        // 如果有可见的标题，选择最靠近顶部的一个
+        if (visibleHeadings.length > 0) {
+          setActiveId(visibleHeadings[0].id);
+        }
       },
       {
-        rootMargin: '-20% 0% -35% 0%',
+        rootMargin: '0px 0px -90% 0px',
         threshold: 0
       }
     );
@@ -91,7 +101,7 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
 
           nav.scrollTo({
             top: scrollTo,
-            behavior: 'smooth'
+            behavior: 'instant'
           });
         }
       }
@@ -102,32 +112,22 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
   const handleWheelEvent = (e: React.WheelEvent) => {
     const nav = navRef.current;
     if (!nav) return;
-
-    const { scrollTop, scrollHeight, clientHeight } = nav;
-    const isScrollingDown = e.deltaY > 0;
-    const isScrollingUp = e.deltaY < 0;
-
-    // Check if we're at the top or bottom of the nav
-    const isAtTop = scrollTop <= 1; // Small tolerance for edge cases
-    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
-
-    // Always prevent external scroll when interacting with TOC
     e.stopPropagation();
-
-    // Handle scroll within the nav manually
-    if ((isScrollingDown && !isAtBottom) || (isScrollingUp && !isAtTop)) {
-      nav.scrollTop += e.deltaY * 0.5; // Smoother scrolling with reduced speed
-    }
   };
 
   const scrollToHeading = (id: string) => {
+    setIsWheelEvent(true);
+    setActiveId(id);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'instant',
         block: 'start'
       });
     }
+    setTimeout(() => {
+      setIsWheelEvent(false);
+    }, 3000);
   };
 
   if (toc.length === 0) {
