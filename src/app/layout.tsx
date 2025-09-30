@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ClientTurbulenceBackground from "../components/ClientTurbulenceBackground";
 import ScrollProgressBar from "../components/ScrollProgressBar";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,6 +52,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
       >
+        <Analytics />
         <ScrollProgressBar />
         <ClientTurbulenceBackground />
         <Header />
