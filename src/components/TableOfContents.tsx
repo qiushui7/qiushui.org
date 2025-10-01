@@ -79,7 +79,7 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
     });
 
     return () => observer.disconnect();
-  }, [toc]);
+  }, [toc, isWheelEvent]);
 
   // Auto-scroll TOC to active item
   useEffect(() => {

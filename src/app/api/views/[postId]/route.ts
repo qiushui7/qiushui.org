@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { db, postViews } from '@/lib/db';
+import { eq } from 'drizzle-orm';
 
 // GET - 获取浏览量
 export async function GET(
@@ -9,24 +10,17 @@ export async function GET(
   try {
     const { postId } = await params;
     const decodedPostId = decodeURIComponent(postId);
-    
-    const { data, error } = await supabase
-      .from('post_views')
-      .select('views')
-      .eq('post_id', decodedPostId)
-      .single();
-    
-    if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
-      console.error('Error getting views:', error);
-      return NextResponse.json(
-        { error: 'Failed to get views' },
-        { status: 500 }
-      );
-    }
-    
+
+    const data = await db.select({
+      views: postViews.views
+    })
+    .from(postViews)
+    .where(eq(postViews.postId, decodedPostId))
+    .limit(1);
+
     return NextResponse.json({
       postId: decodedPostId,
-      views: data?.views || 0
+      views: data[0]?.views || 0
     });
   } catch (error) {
     console.error('Error getting views:', error);
@@ -45,54 +39,41 @@ export async function POST(
   try {
     const { postId } = await params;
     const decodedPostId = decodeURIComponent(postId);
-    
+
     // 首先尝试获取现有记录
-    const { data: existingData } = await supabase
-      .from('post_views')
-      .select('views')
-      .eq('post_id', decodedPostId)
-      .single();
+    const existingData = await db.select({
+      views: postViews.views
+    })
+    .from(postViews)
+    .where(eq(postViews.postId, decodedPostId))
+    .limit(1);
 
-    if (existingData) {
+    if (existingData.length > 0) {
       // 如果记录存在，增加计数
-      const { data, error } = await supabase
-        .from('post_views')
-        .update({ views: existingData.views + 1 })
-        .eq('post_id', decodedPostId)
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Error updating views:', error);
-        return NextResponse.json(
-          { error: 'Failed to update views' },
-          { status: 500 }
-        );
-      }
+      const updatedData = await db.update(postViews)
+        .set({
+          views: existingData[0].views + 1,
+          updatedAt: new Date()
+        })
+        .where(eq(postViews.postId, decodedPostId))
+        .returning();
 
       return NextResponse.json({
         postId: decodedPostId,
-        views: data.views
+        views: updatedData[0].views
       });
     } else {
       // 如果记录不存在，创建新记录
-      const { data, error } = await supabase
-        .from('post_views')
-        .insert({ post_id: decodedPostId, views: 1 })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Error creating views record:', error);
-        return NextResponse.json(
-          { error: 'Failed to create views record' },
-          { status: 500 }
-        );
-      }
+      const newData = await db.insert(postViews)
+        .values({
+          postId: decodedPostId,
+          views: 1
+        })
+        .returning();
 
       return NextResponse.json({
         postId: decodedPostId,
-        views: data.views
+        views: newData[0].views
       });
     }
   } catch (error) {

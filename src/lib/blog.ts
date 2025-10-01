@@ -1,31 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-// import { supabase } from './supabase';
-
-// Load views data from Supabase
-// async function getViewsData(): Promise<Record<string, number>> {
-//   try {
-//     const { data, error } = await supabase
-//       .from('post_views')
-//       .select('post_id, views');
-    
-//     if (error) {
-//       console.error('Error reading views data from Supabase:', error);
-//       return {};
-//     }
-    
-//     const viewsMap: Record<string, number> = {};
-//     data?.forEach(item => {
-//       viewsMap[item.post_id] = item.views;
-//     });
-    
-//     return viewsMap;
-//   } catch (error) {
-//     console.error('Error reading views data:', error);
-//     return {};
-//   }
-// }
 
 const blogDirectory = path.join(process.cwd(), 'src/blog');
 

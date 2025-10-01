@@ -7,6 +7,11 @@ import Image from 'next/image';
 import MobileMenu from './MobileMenu';
 import FullScreenMenu from './FullScreenMenu';
 
+const menuItems = [
+  { href: '/', label: 'Home' },
+  { href: '/blog', label: 'Blog' }
+];
+
 export default function Header() {
   const [scrollY, setScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -128,10 +133,7 @@ export default function Header() {
             {!isScrolled ? (
               // 原始菜单
               <>
-                {[
-                  { href: '/', label: 'Home' },
-                  { href: '/blog', label: 'Blog' }
-                ].map(({ href, label }) => (
+                {menuItems.map(({ href, label }) => (
                   <Link key={href} href={href}>
                     <motion.div
                       className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
@@ -178,6 +180,7 @@ export default function Header() {
           {/* Full Screen Menu Component */}
           <FullScreenMenu
             isMenuOpen={isFullScreenMenuOpen}
+            menuItems={menuItems}
             setIsMenuOpen={setIsFullScreenMenuOpen}
           />
         </div>

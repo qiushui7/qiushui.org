@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react';
 
 interface FullScreenMenuProps {
   isMenuOpen: boolean;
+  menuItems: { href: string; label: string }[];
   setIsMenuOpen: (isOpen: boolean) => void;
 }
 
-export default function FullScreenMenu({ isMenuOpen, setIsMenuOpen }: FullScreenMenuProps) {
+export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpen }: FullScreenMenuProps) {
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -17,11 +18,6 @@ export default function FullScreenMenu({ isMenuOpen, setIsMenuOpen }: FullScreen
     window.location.href = 'mailto:qiushui030716@gmail.com';
     setIsMenuOpen(false);
   };
-
-  const menuItems = [
-    { href: '/', label: 'Home' },
-    { href: '/blog', label: 'Blog' }
-  ];
 
   // 禁用/启用滚动
   useEffect(() => {
