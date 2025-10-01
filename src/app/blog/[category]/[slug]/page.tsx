@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { getPostBySlug, getBlogCategories, getPostsByCategory } from '@/lib/blog';
 import BlogPostClient from './BlogPostClient';
 import MDXContent from '@/components/MDXContent';
+import { WebSite, WithContext } from 'schema-dts';
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -60,6 +61,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  return <BlogPostClient post={post} mdxContent={<MDXContent source={post.content} />} />;
+  const jsonLd: WithContext<WebSite> = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": post.title,
+    "url": `https://www.qiushui.org/blog/${category}/${slug}`,
+    "description": post.excerpt,
+    "author": {
+      "@type": "Person",
+      "name": post.author
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": post.author
+    },
+    "keywords": post.tags,
+    "datePublished": post.date,
+    "mainEntityOfPage": {
+      "@type": "WebSite",
+      "url": `https://www.qiushui.org/blog/${category}/${slug}`
+    }
+  };
+
+  return (
+    <>
+      <script
+        id="json-ld-blog-post"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <BlogPostClient post={post} mdxContent={<MDXContent source={post.content} />} />;
+    </>
+  );
 }
 
