@@ -53,7 +53,7 @@ export default function Header() {
     };
   }, []);
 
-  // 计算背景透明度：滚动距离越大，透明度越低，移动菜单打开时透明度更低
+  // 计算背景透明度：滚动距离越大，透明度越低
   const baseOpacity = Math.min(scrollY / 200, 0.95);
   const backgroundOpacity = isMobileMenuOpen ? Math.max(baseOpacity, 0.98) : baseOpacity;
 
@@ -70,12 +70,13 @@ export default function Header() {
 
   return (
     <motion.header
-      className="fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300"
+      className="fixed top-0 left-0 right-0 border-b transition-all duration-300"
       style={{
         backgroundColor: isMobile ? `rgba(0, 0, 0, ${backgroundOpacity})` : 'transparent',
         borderBottomColor: isMobile ? `rgba(255, 255, 255, ${Math.min(scrollY / 400, 0.1)})` : 'transparent',
         backdropFilter: isMobile ? `blur(${blurAmount}px)` : 'none',
-        boxShadow: isMobile ? `0 4px 20px rgba(0, 0, 0, ${shadowOpacity})` : 'none'
+        boxShadow: isMobile ? `0 4px 20px rgba(0, 0, 0, ${shadowOpacity})` : 'none',
+        zIndex: isMobile ? 70 : 50,
       }}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -174,6 +175,7 @@ export default function Header() {
 
           {/* Mobile Menu Component */}
           <MobileMenu
+            menuItems={menuItems}
             isMenuOpen={isMobileMenuOpen}
             setIsMenuOpen={setIsMobileMenuOpen}
           />

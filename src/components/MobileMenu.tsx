@@ -5,9 +5,10 @@ import Link from 'next/link';
 interface MobileMenuProps {
   isMenuOpen: boolean;
   setIsMenuOpen: (isOpen: boolean) => void;
+  menuItems: { href: string; label: string }[];
 }
 
-export default function MobileMenu({ isMenuOpen, setIsMenuOpen }: MobileMenuProps) {
+export default function MobileMenu({ isMenuOpen, setIsMenuOpen, menuItems }: MobileMenuProps) {
 
   // 处理联系按钮点击
   const handleContactClick = () => {
@@ -33,10 +34,7 @@ export default function MobileMenu({ isMenuOpen, setIsMenuOpen }: MobileMenuProp
       {/* Mobile Menu */}
       <div className={`absolute top-full left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/10 transition-all duration-300 ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
         <div className="px-4 py-4 space-y-6">
-          {[
-            { href: '/', label: 'Home' },
-            { href: '/blog', label: 'Blog' }
-          ].map(({ href, label }) => (
+          {menuItems.map(({ href, label }) => (
             <Link key={href} href={href} onClick={() => setIsMenuOpen(false)}>
               <div className="block text-lg text-white transition-colors duration-300 uppercase tracking-wide">
                 {label}
