@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Video } from '@/lib/db';
-import { formatDistance } from 'date-fns';
+import { format } from 'date-fns';
 
 interface VlogPostsWithViewsProps {
   videos: Array<Video & { categoryName: string | null; categorySlug: string | null }>;
@@ -91,7 +91,7 @@ export default function VlogPostsWithViews({ videos, selectedCategory }: VlogPos
                     </span>
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                       <span>
-                        {formatDistance(new Date(video.publishedAt || ''), new Date(), { addSuffix: true })}
+                        {format(new Date(video.publishedAt || ''), 'MMM d, yyyy')}
                       </span>
                     </div>
                   </div>

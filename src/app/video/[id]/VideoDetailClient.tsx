@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Video } from '@/lib/db';
-import { formatDistance } from 'date-fns';
+import { format } from 'date-fns';
 
 interface VideoDetailClientProps {
   video: Video & { categoryName: string | null; categorySlug: string | null };
@@ -14,7 +14,7 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
   const [views, setViews] = useState(video.viewCount || 0);
 
   // 增加浏览量
-  const incrementViews = async () => {
+  const incrementViews = useCallback(async () => {
     // 检查是否已经在本次会话中浏览过
     const viewedKey = `viewed_${video.id}`;
     const hasViewed = sessionStorage.getItem(viewedKey);
@@ -35,17 +35,11 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
         console.error('Failed to increment views:', error);
       }
     }
-  };
+  }, [video.id]);
 
   useEffect(() => {
     incrementViews();
-  }, [video.id]);
-
-  const formatDuration = (seconds: number): string => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
+  }, [incrementViews]);
 
   const getVideoEmbedUrl = (url: string): string => {
     // Handle YouTube URLs
@@ -88,6 +82,46 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
         </motion.div>
 
         <div className="grid grid-cols-1">
+
+          {/* Video Title and Meta */}
+          <div className="mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">{video.title}</h1>
+
+            <div className="flex items-center justify-between text-sm text-gray-400 mb-4">
+              <div className="flex items-center gap-4">
+                <span className="text-gray-400">
+                  {format(new Date(video.publishedAt), 'MMM d, yyyy')}
+                </span>
+
+                {video.location && (
+                    <>
+                        <span className="flex items-center gap-1">
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                            </svg>
+                            {video.location}
+                        </span>
+                    </>
+                )}
+
+                <div className="flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                    <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>{views.toLocaleString()} views</span>
+                </div>
+              </div>
+
+              {video.categoryName && (
+                <div>
+                  <span className="inline-block bg-white/10 text-gray-300 px-3 py-1 rounded-full text-sm">
+                    {video.categoryName}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
           {/* todo: use player component */}
           {/* Video Player */}
           <motion.div
@@ -104,42 +138,6 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
                 allowFullScreen
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />
-            </div>
-
-            {/* Video Title and Meta */}
-            <div className="mb-6">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">{video.title}</h1>
-
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-4">
-                <div className="flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                    <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>{views.toLocaleString()} views</span>
-                </div>
-
-                <span>•</span>
-
-                <span>
-                  {formatDistance(new Date(video.publishedAt), new Date(), { addSuffix: true })}
-                </span>
-
-                {video.duration && (
-                  <>
-                    <span>•</span>
-                    <span>{formatDuration(video.duration)}</span>
-                  </>
-                )}
-              </div>
-
-              {video.categoryName && (
-                <div className="mb-4">
-                  <span className="inline-block bg-white/10 text-gray-300 px-3 py-1 rounded-full text-sm">
-                    {video.categoryName}
-                  </span>
-                </div>
-              )}
             </div>
 
             {/* Description */}

@@ -22,6 +22,7 @@ export const videos = pgTable('videos', {
   duration: integer('duration'), // in seconds
   categoryId: uuid('category_id').references(() => vlogCategories.id).notNull(),
   tags: text('tags').array(),
+  location: varchar('location', { length: 255 }),
   isPublished: boolean('is_published').default(false).notNull(),
 }, (table) => ([
   index('idx_videos_published_at').on(table.publishedAt.desc()),

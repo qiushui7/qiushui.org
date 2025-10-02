@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BlogPost } from '@/lib/blog';
+import { format } from 'date-fns';
 
 interface BlogPostsWithViewsProps {
   posts: BlogPost[];
@@ -56,8 +57,8 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
                   {getCategoryDisplayName(post.category)}
                 </span>
                 <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <span>{new Date(post.date).toLocaleDateString('en-US')}</span>
-                  {post.location && (
+                  <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
+                  {/* {post.location && (
                     <>
                       <span>•</span>
                       <span className="flex items-center gap-1">
@@ -67,7 +68,7 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
                         {post.location}
                       </span>
                     </>
-                  )}
+                  )} */}
                 </div>
               </div>
               <h2 className="text-xl font-semibold mb-3 line-clamp-2">

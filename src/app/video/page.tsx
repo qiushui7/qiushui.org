@@ -21,6 +21,7 @@ async function getVideoData() {
     duration: videosTable.duration,
     categoryId: videosTable.categoryId,
     tags: videosTable.tags,
+    location: videosTable.location,
     isPublished: videosTable.isPublished,
     categoryName: vlogCategoriesTable.name,
     categorySlug: vlogCategoriesTable.slug,

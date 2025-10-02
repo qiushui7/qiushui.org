@@ -6,6 +6,7 @@ import { BlogPost } from '@/lib/blog';
 import { ReactNode, useState, useEffect } from 'react';
 import ViewCounter from '@/components/ViewCounter';
 import TableOfContents from '@/components/TableOfContents';
+import { format } from 'date-fns';
 
 interface BlogPostClientProps {
     post: BlogPost;
@@ -67,11 +68,7 @@ export default function BlogPostClient({ post, mdxContent }: BlogPostClientProps
                         <span>By {post.author}</span>
                     </>
                 )}
-                <span>{new Date(post.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                })}</span>
+                <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
                 {post.location && (
                     <>
                         <span className="flex items-center gap-1">

@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: Props) {
       title: videosTable.title,
       description: videosTable.description,
       thumbnailUrl: videosTable.thumbnailUrl,
+      location: videosTable.location,
     }).from(videosTable)
       .where(eq(videosTable.id, id))
       .limit(1);
@@ -59,6 +60,7 @@ async function getVideoData(id: string) {
       duration: videosTable.duration,
       categoryId: videosTable.categoryId,
       tags: videosTable.tags,
+      location: videosTable.location,
       isPublished: videosTable.isPublished,
       categoryName: vlogCategoriesTable.name,
       categorySlug: vlogCategoriesTable.slug,
