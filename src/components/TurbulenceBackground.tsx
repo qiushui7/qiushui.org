@@ -10,7 +10,7 @@ export default function TurbulenceBackground({ isClient }: TurbulenceBackgroundP
   if (!isClient) return null;
 
   return (
-    <div className="fixed inset-0 turbulence-bg pointer-events-none z-0">
+    <div className="fixed inset-0 turbulence-bg pointer-events-none z-[-1]">
       {/* Floating Particles */}
       <div className="absolute inset-0">
         {[...Array(20)].map((_, i) => (

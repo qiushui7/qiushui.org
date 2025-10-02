@@ -26,10 +26,10 @@ export default function BlogPostClient({ post, mdxContent }: BlogPostClientProps
   return (
     <div className="min-h-screen text-white relative">
       {/* Content */}
-      <div className="relative mx-auto px-4 py-30">
+      <div className="relative mx-auto px-4 py-20">
         {/* Back Navigation and Category */}
         <motion.div
-          className="flex items-center justify-between mb-8 max-w-4xl mx-auto"
+          className="flex items-center justify-between mb-8 max-w-4xl mx-auto relative z-60"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -38,7 +38,10 @@ export default function BlogPostClient({ post, mdxContent }: BlogPostClientProps
             href="/blog"
             className="inline-flex items-center text-gray-400 hover:text-white transition-colors"
           >
-              ← Back to Blog
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Blog
           </Link>
           <span className="text-sm text-gray-400 uppercase tracking-wide">
             {post.category}

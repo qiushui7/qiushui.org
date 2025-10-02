@@ -3,9 +3,11 @@ import { getAllPosts, getBlogStats } from '@/lib/blog';
 
 export async function GET() {
   try {
-    const posts = await getAllPosts();
-    const stats = await getBlogStats();
-    
+    const [posts, stats] = await Promise.all([
+      getAllPosts(),
+      getBlogStats()
+    ]);
+
     return NextResponse.json({
       success: true,
       data: {

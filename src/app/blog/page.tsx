@@ -9,8 +9,10 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function BlogPage() {
-  const posts = await getAllPosts();
-  const stats = await getBlogStats();
+  const [posts, stats] = await Promise.all([
+    getAllPosts(),
+    getBlogStats()
+  ]);
 
   const blogData = {
     posts,

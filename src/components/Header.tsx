@@ -9,7 +9,8 @@ import FullScreenMenu from './FullScreenMenu';
 
 const menuItems = [
   { href: '/', label: 'Home' },
-  { href: '/blog', label: 'Blog' }
+  { href: '/blog', label: 'Blog' },
+  { href: '/video', label: 'Video' }
 ];
 
 export default function Header() {

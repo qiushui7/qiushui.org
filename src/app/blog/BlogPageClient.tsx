@@ -28,12 +28,6 @@ export default function BlogPageClient({ blogData }: BlogPageClientProps) {
     selectedCategory === 'all' || post.category === selectedCategory
   );
 
-  console.log('BlogPageClient rendered with:', {
-    totalPosts: blogData?.posts?.length,
-    filteredPosts: filteredPosts.length,
-    categories: blogData?.stats?.categories
-  });
-
   // Handle empty data
   if (!blogData || !blogData.posts || blogData.posts.length === 0) {
     return (
