@@ -6,6 +6,7 @@ import VideoDetailClient from './VideoDetailClient';
 
 interface Props {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -79,9 +80,28 @@ async function getVideoData(id: string) {
   }
 }
 
-export default async function VlogDetailPage({ params }: Props) {
+export default async function VlogDetailPage({ params, searchParams }: Props) {
   const { id } = await params;
-  const video = await getVideoData(id);
+  const searchParamsValue = await searchParams;
+
+  // 检查是否有预获取的数据
+  const prefetchData = searchParamsValue.data as string | undefined;
+  const isPrefetch = searchParamsValue.prefetch === 'true';
+
+  let video;
+
+  if (isPrefetch && prefetchData) {
+    try {
+      // 使用传递过来的数据
+      video = JSON.parse(prefetchData);
+    } catch {
+      // 如果解析失败，回退到服务器请求
+      video = await getVideoData(id);
+    }
+  } else {
+    // 直接访问详情页时的服务器请求
+    video = await getVideoData(id);
+  }
 
   if (!video) {
     notFound();

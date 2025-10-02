@@ -50,7 +50,19 @@ export default function VlogPostsWithViews({ videos, selectedCategory }: VlogPos
         const views = viewsMap[video.id] || 0;
 
         return (
-          <Link key={video.id} href={`/video/${video.id}`}>
+          <Link
+            key={video.id}
+            href={{
+              pathname: `/video/${video.id}`,
+              query: {
+                prefetch: 'true',
+                data: JSON.stringify({
+                  ...video,
+                  viewCount: views
+                })
+              }
+            }}
+          >
             <motion.article
               className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden hover:bg-white/15 transition-all duration-300 group cursor-pointer h-full flex flex-col"
               initial={{ opacity: 0, y: 60 }}
