@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Video } from '@/lib/db';
 import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 
 interface VlogPostsWithViewsProps {
   videos: Array<Video & { categoryName: string | null; categorySlug: string | null }>;
@@ -12,6 +13,26 @@ interface VlogPostsWithViewsProps {
 }
 
 export default function VlogPostsWithViews({ videos, selectedCategory }: VlogPostsWithViewsProps) {
+  const [isLoadingViews, setIsLoadingViews] = useState(true);
+  const [viewsMap, setViewsMap] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const fetchViews = async () => {
+      try {
+      const response = await fetch('/api/videos/views');
+      if (response.ok) {
+        const data = await response.json();
+        setViewsMap(data);
+      }
+      } catch (error) {
+        console.error('Failed to fetch views data:', error);
+      } finally {
+        setIsLoadingViews(false);
+      }
+    };
+    fetchViews();
+  }, []);
+
   const filteredVideos = videos.filter(
     (video) => selectedCategory === 'all' || video.categoryId === selectedCategory
   );
@@ -25,9 +46,8 @@ export default function VlogPostsWithViews({ videos, selectedCategory }: VlogPos
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {filteredVideos.map((video, index) => {
-        console.log(video.viewCount);
         
-        const views = video.viewCount || 0;
+        const views = viewsMap[video.id] || 0;
 
         return (
           <Link key={video.id} href={`/video/${video.id}`}>
@@ -123,11 +143,23 @@ export default function VlogPostsWithViews({ videos, selectedCategory }: VlogPos
                 <div className="flex items-center justify-between">
                   <span className="inline-flex items-center text-sm text-white hover:text-gray-300 transition-colors">Watch Now →</span>
                   <div className="flex items-center gap-1 text-xs text-gray-500">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                    </svg>
-                    <span>{views.toLocaleString()}</span>
+                  {isLoadingViews ? (
+                    <>
+                      <svg className="w-3 h-3 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                      </svg>
+                      <span className="w-6 h-3 bg-gray-600 animate-pulse rounded"></span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                      </svg>
+                      <span>{views}</span>
+                    </>
+                  )}
                   </div>
                 </div>
               </div>
