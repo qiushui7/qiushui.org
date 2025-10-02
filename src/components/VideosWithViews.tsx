@@ -32,7 +32,7 @@ export default function VlogPostsWithViews({ videos, selectedCategory }: VlogPos
         return (
           <Link key={video.id} href={`/video/${video.id}`}>
             <motion.article
-              className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden hover:bg-white/15 transition-all duration-300 group cursor-pointer"
+              className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden hover:bg-white/15 transition-all duration-300 group cursor-pointer h-full flex flex-col"
               initial={{ opacity: 0, y: 60 }}
               animate={{ opacity: 1, y: 0 }}
               whileHover="hover"
@@ -83,8 +83,8 @@ export default function VlogPostsWithViews({ videos, selectedCategory }: VlogPos
               </div>
 
               {/* Video Info */}
-              <div className="p-6">
-                <div className="mb-4">
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="mb-4 flex-grow">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs text-gray-400 uppercase tracking-wide">
                       {video.categoryName || 'Uncategorized'}
@@ -99,7 +99,7 @@ export default function VlogPostsWithViews({ videos, selectedCategory }: VlogPos
                     {video.title}
                   </h2>
                   {video.description && (
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-3">
+                    <p className="text-gray-400 text-sm line-clamp-3">
                       {video.description}
                     </p>
                   )}

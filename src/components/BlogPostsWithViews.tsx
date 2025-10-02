@@ -46,12 +46,12 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
         return (
           <motion.article
             key={postId}
-            className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg p-6 hover:bg-white/15 transition-all duration-300"
+            className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg p-6 hover:bg-white/15 transition-all duration-300 h-full flex flex-col"
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
           >
-            <div className="mb-4">
+            <div className="mb-4 flex-grow">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs text-gray-400 uppercase tracking-wide">
                   {getCategoryDisplayName(post.category)}
@@ -75,7 +75,7 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
                 {post.title}
               </h2>
               {post.excerpt && (
-                <p className="text-gray-400 text-sm mb-4 line-clamp-3">
+                <p className="text-gray-400 text-sm line-clamp-3">
                   {post.excerpt}
                 </p>
               )}
