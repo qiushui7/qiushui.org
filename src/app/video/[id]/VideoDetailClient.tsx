@@ -38,7 +38,11 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
   }, [video.id]);
 
   useEffect(() => {
-    incrementViews();
+    const timer = setTimeout(() => {
+      incrementViews();
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, [incrementViews]);
 
   const getVideoEmbedUrl = (url: string): string => {
