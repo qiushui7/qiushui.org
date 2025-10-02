@@ -7,6 +7,8 @@ export const metadata = {
   description: 'Video blogs sharing my journey, thoughts, and experiences',
 };
 
+export const revalidate = 60;
+
 async function getVideoData() {
   const videos = await db.select({
     id: videosTable.id,
