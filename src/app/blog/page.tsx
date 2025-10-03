@@ -1,22 +1,22 @@
 import { getAllPosts, getBlogStats } from '@/lib/blog';
-import BlogPageClient from './BlogPageClient';
+import BlogPageClient from './blog-page-client';
 
 export const metadata = {
   title: 'Blog | qiushui',
-  description: 'Thoughts, tutorials, and insights about web development',
+  description: 'Thoughts, tutorials, and insights about web development'
 };
 
 export const revalidate = 60;
 
-export default async function BlogPage() {
-  const [posts, stats] = await Promise.all([
+export default function BlogPage() {
+  const [posts, stats] = [
     getAllPosts(),
     getBlogStats()
-  ]);
+  ];
 
   const blogData = {
     posts,
-    stats,
+    stats
   };
 
   return <BlogPageClient blogData={blogData} />;

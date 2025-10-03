@@ -3,21 +3,19 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BlogPost } from '@/lib/blog';
-import { format } from 'date-fns';
+import type { BlogPost } from '@/lib/blog';
+import { format } from 'date-fns/format';
 
 interface BlogPostsWithViewsProps {
-  posts: BlogPost[];
-  selectedCategory: string;
+  posts: BlogPost[],
+  selectedCategory: string
 }
 
 export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPostsWithViewsProps) {
   const [viewsData, setViewsData] = useState<Record<string, number>>({});
   const [isLoadingViews, setIsLoadingViews] = useState(true);
 
-  const filteredPosts = posts.filter(post =>
-    selectedCategory === 'all' || post.category === selectedCategory
-  );
+  const filteredPosts = posts.filter(post => selectedCategory === 'all' || post.category === selectedCategory);
 
   useEffect(() => {
     const fetchAllViews = async () => {
@@ -42,7 +40,7 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
       {filteredPosts.map((post, index) => {
         const postId = `${post.category}/${post.slug}`;
         const views = viewsData[postId] || 0;
-        
+
         return (
           <motion.article
             key={postId}
@@ -81,7 +79,7 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
               )}
             </div>
 
-            {post.tags && post.tags.length > 0 && (
+            {post.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {post.tags.slice(0, 3).map((tag) => (
                   <span
@@ -102,23 +100,25 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
                 Read More →
               </Link>
               <div className="flex items-center gap-1 text-xs text-gray-500">
-                {isLoadingViews ? (
-                  <>
-                    <svg className="w-3 h-3 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="w-6 h-3 bg-gray-600 animate-pulse rounded"></span>
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                    </svg>
-                    <span>{views}</span>
-                  </>
-                )}
+                {isLoadingViews
+                  ? (
+                    <>
+                      <svg className="w-3 h-3 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                      </svg>
+                      <span className="w-6 h-3 bg-gray-600 animate-pulse rounded" />
+                    </>
+                  )
+                  : (
+                    <>
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                      </svg>
+                      <span>{views}</span>
+                    </>
+                  )}
               </div>
             </div>
           </motion.article>
@@ -131,9 +131,9 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
 // Helper function to get display name for categories
 function getCategoryDisplayName(category: string): string {
   const categoryMap: Record<string, string> = {
-    'frontend': 'Frontend',
-    'backend': 'Backend',
-    'design': 'UI/UX Design',
+    frontend: 'Frontend',
+    backend: 'Backend',
+    design: 'UI/UX Design',
     'miscellaneous-notes': 'Notes',
     'interview-experience': 'Interview',
     'reading-notes': 'Reading'

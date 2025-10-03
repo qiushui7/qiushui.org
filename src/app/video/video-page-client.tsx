@@ -2,20 +2,20 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Video } from '@/lib/db';
-import VlogPostsWithViews from '@/components/VideosWithViews';
+import type { Video } from '@/lib/db';
+import VlogPostsWithViews from '@/components/videos-with-views';
 
 interface VideoData {
-  videos: Array<Video & { categoryName: string | null; categorySlug: string | null }>;
+  videos: Array<Video & { categoryName: string | null, categorySlug: string | null }>,
   stats: {
-    totalVideos: number;
-    totalCategories: number;
-    categories: Array<{ id: string; name: string; slug: string; count: number }>;
-  };
+    totalVideos: number,
+    totalCategories: number,
+    categories: Array<{ id: string, name: string, slug: string, count: number }>
+  }
 }
 
 interface VideoPageClientProps {
-  videoData: VideoData;
+  videoData: VideoData
 }
 
 export default function VideoPageClient({ videoData }: VideoPageClientProps) {
@@ -25,7 +25,7 @@ export default function VideoPageClient({ videoData }: VideoPageClientProps) {
     (video) => selectedCategory === 'all' || video.categoryId === selectedCategory
   );
 
-  if (!videoData || !videoData.videos || videoData.videos.length === 0) {
+  if (videoData.videos.length === 0) {
     return (
       <div className="min-h-screen text-white py-20 relative z-20">
         <div className="max-w-6xl mx-auto px-4 text-center">
@@ -60,21 +60,25 @@ export default function VideoPageClient({ videoData }: VideoPageClientProps) {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <button
+            type="button"
             onClick={() => setSelectedCategory('all')}
             className={`px-4 py-2 rounded-full text-sm transition-all ${selectedCategory === 'all'
-                ? 'bg-white text-black'
-                : 'bg-white/10 text-white hover:bg-white/20'
-              }`}>
+              ? 'bg-white text-black'
+              : 'bg-white/10 text-white hover:bg-white/20'
+            }`}
+          >
             All ({videoData.videos.length})
           </button>
           {videoData.stats.categories.map((category) => (
             <button
+              type="button"
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
               className={`px-4 py-2 rounded-full text-sm transition-all capitalize ${selectedCategory === category.id
-                  ? 'bg-white text-black'
-                  : 'bg-white/10 text-white hover:bg-white/20'
-                }`}>
+                ? 'bg-white text-black'
+                : 'bg-white/10 text-white hover:bg-white/20'
+              }`}
+            >
               {category.name} ({category.count})
             </button>
           ))}
@@ -91,4 +95,3 @@ export default function VideoPageClient({ videoData }: VideoPageClientProps) {
     </div>
   );
 }
-

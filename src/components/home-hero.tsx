@@ -1,26 +1,19 @@
 'use client';
 
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import Marquee from "react-fast-marquee";
-import Link from "next/link";
-
-
-interface HeroProps {
-  isClient: boolean;
-}
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import Marquee from 'react-fast-marquee';
+import Link from 'next/link';
 
 function Icon({ src, alt }: { src: string, alt: string }) {
   return (
     <Image src={src} alt={alt} width={24} height={24} />
-  )
+  );
 }
 
-export default function Hero({ isClient }: HeroProps) {
+export default function Hero() {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
-
-  if (!isClient) return null;
 
   const skills = [
     { name: 'HTML', icon: <Icon src="/html-5.svg" alt="HTML" /> },
@@ -35,7 +28,7 @@ export default function Hero({ isClient }: HeroProps) {
     { name: 'Tailwind', icon: <Icon src="/tailwind.svg" alt="Tailwind" /> },
     { name: 'PostgreSQL', icon: <Icon src="/postgresql.svg" alt="PostgreSQL" /> },
     { name: 'Docker', icon: <Icon src="/docker.svg" alt="Docker" /> },
-    { name: 'AWS', icon: <Icon src="/aws.svg" alt="AWS" /> },
+    { name: 'AWS', icon: <Icon src="/aws.svg" alt="AWS" /> }
   ];
 
   return (
@@ -48,11 +41,11 @@ export default function Hero({ isClient }: HeroProps) {
             className="space-y-6 lg:space-y-8 order-2 lg:order-1 flex-1"
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+            transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
           >
             <div className="space-y-6">
               <div className="flex items-center space-x-3 text-sm text-gray-400 uppercase tracking-widest">
-                <span className="w-12 h-px bg-white/30"></span>
+                <span className="w-12 h-px bg-white/30" />
                 <span>Creative Developer</span>
               </div>
 
@@ -72,7 +65,7 @@ export default function Hero({ isClient }: HeroProps) {
 
             {/* 行动按钮 */}
             <div className="flex flex-wrap gap-4">
-              <button className="bg-white text-black px-6 lg:px-8 py-3 text-sm uppercase tracking-wide hover:bg-gray-200 transition-colors duration-150">
+              <button type="button" className="bg-white text-black px-6 lg:px-8 py-3 text-sm uppercase tracking-wide hover:bg-gray-200 transition-colors duration-150">
                 <Link href="/blog">
                   View My Blog
                 </Link>
@@ -88,12 +81,12 @@ export default function Hero({ isClient }: HeroProps) {
             className="flex justify-end order-1 lg:order-2 flex-1"
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
           >
             <motion.div
               className="relative avatar-container mr-4"
               whileHover={{ scale: 1.05, rotate: 2 }}
-              transition={{ duration: 0.1, ease: "easeOut" }}
+              transition={{ duration: 0.1, ease: 'easeOut' }}
             >
               {/* 主头像 */}
               <div className="w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 p-2">
@@ -110,8 +103,8 @@ export default function Hero({ isClient }: HeroProps) {
               </div>
 
               {/* 装饰元素 */}
-              <div className="absolute -inset-4 rounded-full border border-white/10 animate-pulse"></div>
-              <div className="absolute -inset-8 rounded-full border border-white/5"></div>
+              <div className="absolute -inset-4 rounded-full border border-white/10 animate-pulse" />
+              <div className="absolute -inset-8 rounded-full border border-white/5" />
 
               {/* 浮动标签 */}
               <div className="absolute top-4 sm:top-8 -left-2 sm:-left-4 bg-black/80 backdrop-blur-sm border border-white/20 rounded px-2 sm:px-3 py-1 sm:py-2 text-xs uppercase tracking-wide">
@@ -131,11 +124,11 @@ export default function Hero({ isClient }: HeroProps) {
           className="mt-12 mb-8"
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.4, delay: 0.3, ease: 'easeOut' }}
         >
           <Marquee
             speed={40}
-            pauseOnHover={true}
+            pauseOnHover
             className="py-4"
           >
             {skills.map((skill) => (
@@ -147,14 +140,14 @@ export default function Hero({ isClient }: HeroProps) {
                 animate={{
                   opacity: hoveredSkill && hoveredSkill !== skill.name ? 0.3 : 1,
                   scale: hoveredSkill === skill.name ? 1.1 : 1,
-                  filter: hoveredSkill && hoveredSkill !== skill.name ? "blur(1px)" : "blur(0px)"
+                  filter: hoveredSkill && hoveredSkill !== skill.name ? 'blur(1px)' : 'blur(0px)'
                 }}
                 transition={{
                   duration: 0.3,
-                  ease: "easeOut"
+                  ease: 'easeOut'
                 }}
               >
-                {skill.icon && <span className="w-6 h-6">{skill.icon}</span>}
+                <span className="w-6 h-6">{skill.icon}</span>
                 {skill.name}
               </motion.span>
             ))}
@@ -164,10 +157,10 @@ export default function Hero({ isClient }: HeroProps) {
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <div className="flex flex-col items-center space-y-2 text-gray-500">
             <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
-            <div className="w-px h-8 bg-gradient-to-b from-white/30 to-transparent"></div>
+            <div className="w-px h-8 bg-gradient-to-b from-white/30 to-transparent" />
           </div>
         </div>
       </div>
     </section>
   );
-} 
+}

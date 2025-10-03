@@ -1,6 +1,6 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { ReactNode } from 'react';
-import MDXCodeBlock from './MDXCodeBlock';
+import type { ReactNode } from 'react';
+import MDXCodeBlock from './mdx-code-block';
 
 // Custom components for MDX
 const components = {
@@ -49,7 +49,7 @@ const components = {
       {children}
     </blockquote>
   ),
-  code: ({ children }: { children: ReactNode; className?: string }) => {
+  code({ children }: { children: ReactNode, className?: string }) {
     // Otherwise it's inline code
     return (
       <code className="bg-gray-800 text-gray-300 px-2 py-1 rounded text-sm font-mono">
@@ -57,7 +57,7 @@ const components = {
       </code>
     );
   },
-  pre: ({ children }: { children: ReactNode }) => {
+  pre({ children }: { children: ReactNode }) {
     // Fallback for regular pre blocks
     return (
       <pre className="bg-gray-900 border border-gray-700 rounded-lg p-4 overflow-x-auto my-6">
@@ -67,7 +67,7 @@ const components = {
       </pre>
     );
   },
-  a: ({ href, children }: { href?: string; children: ReactNode }) => (
+  a: ({ href, children }: { href?: string, children: ReactNode }) => (
     <a
       href={href}
       className="text-blue-400 hover:text-blue-300 transition-colors underline"
@@ -123,14 +123,14 @@ const components = {
     </td>
   ),
   // Custom components for direct use in MDX
-  CodeBlock: MDXCodeBlock,
+  CodeBlock: MDXCodeBlock
 };
 
 interface MDXContentProps {
-  source: string;
+  source: string
 }
 
-export default async function MDXContent({ source }: MDXContentProps) {
+export default function MDXContent({ source }: MDXContentProps) {
   return (
     <div className="prose prose-invert prose-lg max-w-none">
       <MDXRemote source={source} components={components} />

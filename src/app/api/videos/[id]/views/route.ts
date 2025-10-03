@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { db, videos } from '@/lib/db';
 import { eq } from 'drizzle-orm';
 
@@ -13,9 +14,9 @@ export async function GET(
     const data = await db.select({
       viewCount: videos.viewCount
     })
-    .from(videos)
-    .where(eq(videos.id, id))
-    .limit(1);
+      .from(videos)
+      .where(eq(videos.id, id))
+      .limit(1);
 
     if (data.length === 0) {
       return NextResponse.json(
@@ -28,8 +29,7 @@ export async function GET(
       videoId: id,
       views: data[0].viewCount
     });
-  } catch (error) {
-    console.error('Error getting video views:', error);
+  } catch {
     return NextResponse.json(
       { error: 'Failed to get video views' },
       { status: 500 }
@@ -49,9 +49,9 @@ export async function POST(
     const existingVideo = await db.select({
       viewCount: videos.viewCount
     })
-    .from(videos)
-    .where(eq(videos.id, id))
-    .limit(1);
+      .from(videos)
+      .where(eq(videos.id, id))
+      .limit(1);
 
     if (existingVideo.length === 0) {
       return NextResponse.json(
@@ -73,8 +73,7 @@ export async function POST(
       videoId: id,
       views: updatedData[0].viewCount
     });
-  } catch (error) {
-    console.error('Error incrementing video views:', error);
+  } catch {
     return NextResponse.json(
       { error: 'Failed to increment video views' },
       { status: 500 }

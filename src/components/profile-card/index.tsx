@@ -1,30 +1,30 @@
-import React, { useEffect, useRef, useCallback, useMemo } from "react";
-import Image from "next/image";
-import "./ProfileCard.css";
+import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import Image from 'next/image';
+import './profile-card.css';
 
 interface ProfileCardProps {
-  avatarUrl: string;
-  iconUrl?: string;
-  grainUrl?: string;
-  behindGradient?: string;
-  innerGradient?: string;
-  showBehindGradient?: boolean;
-  className?: string;
-  enableTilt?: boolean;
-  miniAvatarUrl?: string;
-  name?: string;
-  title?: string;
-  handle?: string;
-  status?: string;
-  contactText?: string;
-  showUserInfo?: boolean;
-  onContactClick?: () => void;
-  width?: number | string;
-  height?: number | string;
+  avatarUrl: string,
+  iconUrl?: string,
+  grainUrl?: string,
+  behindGradient?: string,
+  innerGradient?: string,
+  showBehindGradient?: boolean,
+  className?: string,
+  enableTilt?: boolean,
+  miniAvatarUrl?: string,
+  name?: string,
+  title?: string,
+  handle?: string,
+  status?: string,
+  contactText?: string,
+  showUserInfo?: boolean,
+  onContactClick?: () => void,
+  width?: number | string,
+  height?: number | string
 }
 
 const DEFAULT_BEHIND_GRADIENT =
-  "radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(266,100%,90%,var(--card-opacity)) 4%,hsla(266,50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(266,25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(266,0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)";
+  'radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(266,100%,90%,var(--card-opacity)) 4%,hsla(266,50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(266,25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(266,0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)';
 
 // const DEFAULT_INNER_GRADIENT =
 //   "linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)";
@@ -33,45 +33,47 @@ const ANIMATION_CONFIG = {
   SMOOTH_DURATION: 600,
   INITIAL_DURATION: 1500,
   INITIAL_X_OFFSET: 70,
-  INITIAL_Y_OFFSET: 60,
+  INITIAL_Y_OFFSET: 60
 } as const;
 
-const clamp = (value: number, min = 0, max = 100): number =>
-  Math.min(Math.max(value, min), max);
+function clamp(value: number, min = 0, max = 100): number {
+  return Math.min(Math.max(value, min), max);
+}
 
-const round = (value: number, precision = 3): number =>
-  parseFloat(value.toFixed(precision));
+function round(value: number, precision = 3): number {
+  return Number.parseFloat(value.toFixed(precision));
+}
 
-const adjust = (
-  value: number,
+function adjust(value: number,
   fromMin: number,
   fromMax: number,
   toMin: number,
-  toMax: number
-): number =>
-  round(toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin));
+  toMax: number): number {
+  return round(toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin));
+}
 
-const easeInOutCubic = (x: number): number =>
-  x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+function easeInOutCubic(x: number): number {
+  return x < 0.5 ? 4 * x * x * x : 1 - ((-2 * x + 2) ** 3) / 2;
+}
 
-const ProfileCardComponent: React.FC<ProfileCardProps> = ({
-  avatarUrl = "<Placeholder for avatar URL>",
-  iconUrl = "<Placeholder for icon URL>",
-  grainUrl = "<Placeholder for grain URL>",
+const ProfileCardComponent: React.ComponentType<ProfileCardProps> = ({
+  avatarUrl = '<Placeholder for avatar URL>',
+  iconUrl = '<Placeholder for icon URL>',
+  grainUrl = '<Placeholder for grain URL>',
   behindGradient,
   showBehindGradient = true,
-  className = "",
+  className = '',
   enableTilt = true,
   miniAvatarUrl,
   name,
-  title = "Software Engineer",
+  title = 'Software Engineer',
   handle,
-  status = "Online",
-  contactText = "Contact",
+  status = 'Online',
+  contactText = 'Contact',
   showUserInfo = true,
   onContactClick,
   width,
-  height,
+  height
 }) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -97,19 +99,19 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
       const centerY = percentY - 50;
 
       const properties = {
-        "--pointer-x": `${percentX}%`,
-        "--pointer-y": `${percentY}%`,
-        "--background-x": `${adjust(percentX, 0, 100, 35, 65)}%`,
-        "--background-y": `${adjust(percentY, 0, 100, 35, 65)}%`,
-        "--pointer-from-center": `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`,
-        "--pointer-from-top": `${percentY / 100}`,
-        "--pointer-from-left": `${percentX / 100}`,
-        "--rotate-x": `${round(-(centerX / 5))}deg`,
-        "--rotate-y": `${round(centerY / 4)}deg`,
+        '--pointer-x': `${percentX}%`,
+        '--pointer-y': `${percentY}%`,
+        '--background-x': `${adjust(percentX, 0, 100, 35, 65)}%`,
+        '--background-y': `${adjust(percentY, 0, 100, 35, 65)}%`,
+        '--pointer-from-center': clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1),
+        '--pointer-from-top': percentY / 100,
+        '--pointer-from-left': percentX / 100,
+        '--rotate-x': `${round(-(centerX / 5))}deg`,
+        '--rotate-y': `${round(centerY / 4)}deg`
       };
 
       Object.entries(properties).forEach(([property, value]) => {
-        wrap.style.setProperty(property, value);
+        wrap.style.setProperty(property, value.toString());
       });
     };
 
@@ -145,12 +147,12 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     return {
       updateCardTransform,
       createSmoothAnimation,
-      cancelAnimation: () => {
+      cancelAnimation() {
         if (rafId) {
           cancelAnimationFrame(rafId);
           rafId = null;
         }
-      },
+      }
     };
   }, [enableTilt]);
 
@@ -179,8 +181,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     if (!card || !wrap || !animationHandlers) return;
 
     animationHandlers.cancelAnimation();
-    wrap.classList.add("active");
-    card.classList.add("active");
+    wrap.classList.add('active');
+    card.classList.add('active');
   }, [animationHandlers]);
 
   const handlePointerLeave = useCallback(
@@ -197,8 +199,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         card,
         wrap
       );
-      wrap.classList.remove("active");
-      card.classList.remove("active");
+      wrap.classList.remove('active');
+      card.classList.remove('active');
     },
     [animationHandlers]
   );
@@ -215,9 +217,9 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     const pointerEnterHandler = handlePointerEnter as EventListener;
     const pointerLeaveHandler = handlePointerLeave as EventListener;
 
-    card.addEventListener("pointerenter", pointerEnterHandler);
-    card.addEventListener("pointermove", pointerMoveHandler);
-    card.addEventListener("pointerleave", pointerLeaveHandler);
+    card.addEventListener('pointerenter', pointerEnterHandler);
+    card.addEventListener('pointermove', pointerMoveHandler);
+    card.addEventListener('pointerleave', pointerLeaveHandler);
 
     const initialX = wrap.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
     const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
@@ -232,9 +234,9 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     );
 
     return () => {
-      card.removeEventListener("pointerenter", pointerEnterHandler);
-      card.removeEventListener("pointermove", pointerMoveHandler);
-      card.removeEventListener("pointerleave", pointerLeaveHandler);
+      card.removeEventListener('pointerenter', pointerEnterHandler);
+      card.removeEventListener('pointermove', pointerMoveHandler);
+      card.removeEventListener('pointerleave', pointerLeaveHandler);
       animationHandlers.cancelAnimation();
     };
   }, [
@@ -242,17 +244,17 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     animationHandlers,
     handlePointerMove,
     handlePointerEnter,
-    handlePointerLeave,
+    handlePointerLeave
   ]);
 
   const cardStyle = useMemo(
     () => {
       const style: React.CSSProperties = {
-        "--icon": iconUrl ? `url(${iconUrl})` : "none",
-        "--grain": grainUrl ? `url(${grainUrl})` : "none",
-        "--behind-gradient": showBehindGradient
+        '--icon': iconUrl ? `url(${iconUrl})` : 'none',
+        '--grain': grainUrl ? `url(${grainUrl})` : 'none',
+        '--behind-gradient': showBehindGradient
           ? (behindGradient ?? DEFAULT_BEHIND_GRADIENT)
-          : "none",
+          : 'none'
         // "--inner-gradient": innerGradient ?? DEFAULT_INNER_GRADIENT,
       } as React.CSSProperties;
 
@@ -292,13 +294,13 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
             <Image
               className="avatar"
               src={avatarUrl}
-              alt={`${name || "User"} avatar`}
+              alt={`${name || 'User'} avatar`}
               width={200}
               height={200}
               priority
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.style.display = "none";
+                target.style.display = 'none';
               }}
             />
             {showUserInfo && (
@@ -307,12 +309,12 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                   <div className="pc-mini-avatar">
                     <Image
                       src={miniAvatarUrl || avatarUrl}
-                      alt={`${name || "User"} mini avatar`}
+                      alt={`${name || 'User'} mini avatar`}
                       width={50}
                       height={50}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        target.style.opacity = "0.5";
+                        target.style.opacity = '0.5';
                         target.src = avatarUrl;
                       }}
                     />
@@ -325,9 +327,9 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 <button
                   className="pc-contact-btn"
                   onClick={handleContactClick}
-                  style={{ pointerEvents: "auto" }}
+                  style={{ pointerEvents: 'auto' }}
                   type="button"
-                  aria-label={`Contact ${name || "user"}`}
+                  aria-label={`Contact ${name || 'user'}`}
                 >
                   {contactText}
                 </button>

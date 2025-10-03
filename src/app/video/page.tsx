@@ -1,10 +1,10 @@
-import VideoPageClient from './VideoPageClient';
+import VideoPageClient from './video-page-client';
 import { db, videos as videosTable, vlogCategories as vlogCategoriesTable } from '@/lib/db';
 import { desc, eq, count } from 'drizzle-orm';
 
 export const metadata = {
   title: 'Videos | qiushui',
-  description: 'Video blogs sharing my journey, thoughts, and experiences',
+  description: 'Video blogs sharing my journey, thoughts, and experiences'
 };
 
 export const revalidate = 60;
@@ -26,28 +26,23 @@ async function getVideoData() {
     location: videosTable.location,
     isPublished: videosTable.isPublished,
     categoryName: vlogCategoriesTable.name,
-    categorySlug: vlogCategoriesTable.slug,
-  }).from(videosTable)
-    .leftJoin(vlogCategoriesTable, eq(videosTable.categoryId, vlogCategoriesTable.id))
-    .where(eq(videosTable.isPublished, true))
-    .orderBy(desc(videosTable.publishedAt));
+    categorySlug: vlogCategoriesTable.slug
+  }).from(videosTable).leftJoin(vlogCategoriesTable, eq(videosTable.categoryId, vlogCategoriesTable.id)).where(eq(videosTable.isPublished, true)).orderBy(desc(videosTable.publishedAt));
 
   const categories = await db.select({
     id: vlogCategoriesTable.id,
     name: vlogCategoriesTable.name,
     slug: vlogCategoriesTable.slug,
     count: count(videosTable.id)
-  }).from(vlogCategoriesTable)
-    .leftJoin(videosTable, eq(vlogCategoriesTable.id, videosTable.categoryId))
-    .groupBy(vlogCategoriesTable.id, vlogCategoriesTable.name, vlogCategoriesTable.slug);
+  }).from(vlogCategoriesTable).leftJoin(videosTable, eq(vlogCategoriesTable.id, videosTable.categoryId)).groupBy(vlogCategoriesTable.id, vlogCategoriesTable.name, vlogCategoriesTable.slug);
 
   return {
     videos,
     stats: {
       totalVideos: videos.length,
       totalCategories: categories.length,
-      categories,
-    },
+      categories
+    }
   };
 }
 

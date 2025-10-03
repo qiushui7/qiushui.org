@@ -1,13 +1,13 @@
 import { codeToHtml } from 'shiki';
-import { transformerNotationHighlight, transformerMetaHighlight } from '@shikijs/transformers'
-import CodeBlockClient from './CodeBlockClient';
+import { transformerNotationHighlight, transformerMetaHighlight } from '@shikijs/transformers';
+import CodeBlockClient from './code-block-client';
 
 interface MDXCodeBlockProps {
-  children: string;
-  language?: string;
-  title?: string;
-  highlightLines?: number[];
-  filename?: string;
+  children: string,
+  language?: string,
+  title?: string,
+  highlightLines?: number[],
+  filename?: string
 }
 
 export default async function MDXCodeBlock({
@@ -20,22 +20,19 @@ export default async function MDXCodeBlock({
 
   let code = typeof children === 'string' ? children.trim() : String(children).trim();
 
-
   // Detect the minimum indentation and remove it to normalize the code block
   const lines = code.split('\n');
 
   if (lines.length > 0) {
     const minIndent = Math.min(
       ...lines.map(line => {
-        const match = line.match(/^(\s*)/);
+        const match = /^(\s*)/.exec(line);
         return match ? match[1].length : 0;
       })
     );
 
     if (minIndent > 0) {
-      code = lines.map(line =>
-        line.trim().length === 0 ? line : line.slice(minIndent)
-      ).join('\n');
+      code = lines.map(line => (line.trim().length === 0 ? line : line.slice(minIndent))).join('\n');
     }
   }
 
@@ -98,7 +95,8 @@ export default async function MDXCodeBlock({
           )}
 
           <pre className={`bg-gray-900 border border-gray-700 p-4 overflow-x-auto ${title || filename ? 'rounded-b-lg rounded-t-none' : 'rounded-lg'
-            }`}>
+          }`}
+          >
             <code className="text-gray-300 font-mono text-sm">
               {code}
             </code>

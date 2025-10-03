@@ -3,12 +3,31 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Video } from '@/lib/db';
-import { format } from 'date-fns';
+import type { Video } from '@/lib/db';
+import { format } from 'date-fns/format';
 
 interface VideoDetailClientProps {
-  video: Video & { categoryName: string | null; categorySlug: string | null };
+  video: Video & { categoryName: string | null, categorySlug: string | null }
 }
+
+function getVideoEmbedUrl(url: string): string {
+  // Handle YouTube URLs
+  if (url.includes('youtube.com/watch?v=')) {
+    const videoId = url.split('v=')[1]?.split('&')[0];
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  if (url.includes('youtu.be/')) {
+    const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  // Handle Vimeo URLs
+  if (url.includes('vimeo.com/')) {
+    const videoId = url.split('vimeo.com/')[1]?.split('?')[0];
+    return `https://player.vimeo.com/video/${videoId}`;
+  }
+  // Return original URL for other video sources
+  return url;
+};
 
 export default function VideoDetailClient({ video }: VideoDetailClientProps) {
   const [views, setViews] = useState(video.viewCount || 0);
@@ -18,13 +37,13 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
     // 检查是否已经在本次会话中浏览过
     const viewedKey = `viewed_${video.id}`;
     const hasViewed = sessionStorage.getItem(viewedKey);
-    
+
     if (!hasViewed) {
       try {
         const response = await fetch(`/api/videos/${encodeURIComponent(video.id)}/views`, {
-          method: 'POST',
+          method: 'POST'
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           setViews(data.views);
@@ -44,25 +63,6 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
 
     return () => clearTimeout(timer);
   }, [incrementViews]);
-
-  const getVideoEmbedUrl = (url: string): string => {
-    // Handle YouTube URLs
-    if (url.includes('youtube.com/watch?v=')) {
-      const videoId = url.split('v=')[1]?.split('&')[0];
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-    if (url.includes('youtu.be/')) {
-      const videoId = url.split('youtu.be/')[1]?.split('?')[0];
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-    // Handle Vimeo URLs
-    if (url.includes('vimeo.com/')) {
-      const videoId = url.split('vimeo.com/')[1]?.split('?')[0];
-      return `https://player.vimeo.com/video/${videoId}`;
-    }
-    // Return original URL for other video sources
-    return url;
-  };
 
   return (
     <div className="min-h-screen text-white relative">
@@ -98,14 +98,12 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
                 </span>
 
                 {video.location && (
-                    <>
-                        <span className="flex items-center gap-1">
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                            </svg>
-                            {video.location}
-                        </span>
-                    </>
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                    </svg>
+                    {video.location}
+                  </span>
                 )}
 
                 <div className="flex items-center gap-1">
@@ -136,6 +134,7 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
           >
             <div className="relative aspect-video bg-black rounded-lg overflow-hidden mb-6">
               <iframe
+                // sandbox="allow-same-origin allow-scripts allow-popups"
                 src={getVideoEmbedUrl(video.videoUrl)}
                 title={video.title}
                 className="w-full h-full"

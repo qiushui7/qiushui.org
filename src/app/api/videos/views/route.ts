@@ -9,8 +9,8 @@ export async function GET() {
       id: videos.id,
       viewCount: videos.viewCount
     })
-    .from(videos)
-    .where(eq(videos.isPublished, true));
+      .from(videos)
+      .where(eq(videos.isPublished, true));
 
     const viewsMap: Record<string, number> = {};
     data.forEach(video => {
@@ -18,8 +18,7 @@ export async function GET() {
     });
 
     return NextResponse.json(viewsMap);
-  } catch (error) {
-    console.error('Error getting all video views:', error);
+  } catch {
     return NextResponse.json(
       { error: 'Failed to get video views' },
       { status: 500 }

@@ -3,13 +3,13 @@
 import { useEffect, useState, useRef } from 'react';
 
 interface TOCItem {
-  id: string;
-  text: string;
-  level: number;
+  id: string,
+  text: string,
+  level: number
 }
 
 interface TableOfContentsProps {
-  className?: string;
+  className?: string
 }
 
 export default function TableOfContents({ className = '' }: TableOfContentsProps) {
@@ -29,17 +29,17 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
       if (!heading.id) {
         const text = heading.textContent || '';
         const id = text.toLowerCase()
-          .replace(/[^\w\s-]/g, '') // 移除特殊字符
-          .replace(/\s+/g, '-') // 将空格替换为短横线
+          .replaceAll(/[^\s\w-]/g, '') // 移除特殊字符
+          .replaceAll(/\s+/g, '-') // 将空格替换为短横线
           .trim() + `-${index}` || `heading-${index}`;
-          
+
         heading.id = id;
       }
 
       tocItems.push({
         id: heading.id,
         text: heading.textContent || '',
-        level: parseInt(heading.tagName.charAt(1))
+        level: Number.parseInt(heading.tagName.charAt(1), 10)
       });
     });
 
@@ -52,13 +52,16 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
         if (isWheelEvent) return;
         // 获取所有 intersecting 的标题
         const visibleHeadings = entries
-          .filter(entry => entry.isIntersecting)
-          .map(entry => ({
-            id: entry.target.id,
-            top: entry.boundingClientRect.top
-          }))
+          .reduce<Array<{ id: string, top: number }>>((acc, entry) => {
+            if (entry.isIntersecting) {
+              acc.push({
+                id: entry.target.id,
+                top: entry.boundingClientRect.top
+              });
+            }
+            return acc;
+          }, [])
           .sort((a, b) => a.top - b.top); // 按距离顶部的距离排序
-          
         // 如果有可见的标题，选择最靠近顶部的一个
         if (visibleHeadings.length > 0) {
           setActiveId(visibleHeadings[0].id);
@@ -125,8 +128,9 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
         block: 'start'
       });
     }
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsWheelEvent(false);
+      clearTimeout(timer);
     }, 3000);
   };
 
@@ -149,14 +153,15 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
             {toc.map(({ id, text, level }) => (
               <li key={id}>
                 <button
+                  type="button"
                   data-id={id}
                   onClick={() => scrollToHeading(id)}
                   className={`
                     block w-full text-left text-sm transition-colors duration-200 py-1 px-2 rounded cursor-pointer
                     ${activeId === id
-                      ? 'text-white bg-white/10 font-medium'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
-                    }
+                ? 'text-white bg-white/10 font-medium'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }
                   `}
                   style={{
                     paddingLeft: `${(level - 1) * 12 + 8}px`

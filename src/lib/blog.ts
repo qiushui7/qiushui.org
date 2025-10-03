@@ -5,31 +5,34 @@ import matter from 'gray-matter';
 const blogDirectory = path.join(process.cwd(), 'src/blog');
 
 export interface BlogPost {
-  slug: string;
-  category: string;
-  title: string;
-  date: string;
-  author: string;
-  excerpt: string;
-  tags: string[];
-  content: string;
-  location?: string;
-  views?: number;
+  slug: string,
+  category: string,
+  title: string,
+  date: string,
+  author: string,
+  excerpt: string,
+  tags: string[],
+  content: string,
+  location?: string,
+  views?: number
 }
 
 export interface BlogCategory {
-  name: string;
-  count: number;
-  posts: BlogPost[];
+  name: string,
+  count: number,
+  posts: BlogPost[]
 }
 
 // Get all categories
 export function getBlogCategories(): string[] {
   try {
-    const categories = fs.readdirSync(blogDirectory, { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name);
-    return categories;
+    return fs.readdirSync(blogDirectory, { withFileTypes: true })
+      .reduce<string[]>((acc, dirent) => {
+        if (dirent.isDirectory()) {
+          acc.push(dirent.name);
+        }
+        return acc;
+      }, []);
   } catch (error) {
     console.error('Error reading blog categories:', error);
     return [];
@@ -37,10 +40,10 @@ export function getBlogCategories(): string[] {
 }
 
 // Get all posts from a specific category
-export async function getPostsByCategory(category: string): Promise<BlogPost[]> {
+export function getPostsByCategory(category: string): BlogPost[] {
   try {
     const categoryPath = path.join(blogDirectory, category);
-    
+
     if (!fs.existsSync(categoryPath)) {
       return [];
     }
@@ -64,7 +67,7 @@ export async function getPostsByCategory(category: string): Promise<BlogPost[]> 
         tags: data.tags || [],
         content,
         location: data.location,
-        views: 0,
+        views: 0
       };
     });
 
@@ -77,12 +80,12 @@ export async function getPostsByCategory(category: string): Promise<BlogPost[]> 
 }
 
 // Get all posts from all categories
-export async function getAllPosts(): Promise<BlogPost[]> {
+export function getAllPosts(): BlogPost[] {
   const categories = getBlogCategories();
   const allPosts: BlogPost[] = [];
 
   for (const category of categories) {
-    const posts = await getPostsByCategory(category);
+    const posts = getPostsByCategory(category);
     allPosts.push(...posts);
   }
 
@@ -91,10 +94,10 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 }
 
 // Get a specific post by category and slug
-export async function getPostBySlug(category: string, slug: string): Promise<BlogPost | null> {
+export function getPostBySlug(category: string, slug: string): BlogPost | null {
   try {
     const fullPath = path.join(blogDirectory, category, `${slug}.mdx`);
-    
+
     if (!fs.existsSync(fullPath)) {
       return null;
     }
@@ -112,7 +115,7 @@ export async function getPostBySlug(category: string, slug: string): Promise<Blo
       tags: data.tags || [],
       content,
       location: data.location,
-      views: 0,
+      views: 0
     };
   } catch (error) {
     console.error(`Error reading post ${category}/${slug}:`, error);
@@ -121,16 +124,16 @@ export async function getPostBySlug(category: string, slug: string): Promise<Blo
 }
 
 // Get blog statistics
-export async function getBlogStats() {
+export function getBlogStats() {
   const categories = getBlogCategories();
   const stats = [];
 
   for (const category of categories) {
-    const posts = await getPostsByCategory(category);
+    const posts = getPostsByCategory(category);
     stats.push({
       name: category,
       count: posts.length,
-      posts,
+      posts
     });
   }
 
@@ -139,6 +142,6 @@ export async function getBlogStats() {
   return {
     totalPosts,
     totalCategories: categories.length,
-    categories: stats,
+    categories: stats
   };
-} 
+}

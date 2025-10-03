@@ -2,34 +2,32 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { BlogPost } from '@/lib/blog';
-import BlogPostsWithViews from '@/components/BlogPostsWithViews';
+import type { BlogPost } from '@/lib/blog';
+import BlogPostsWithViews from '@/components/blog-posts-with-views';
 
 interface BlogData {
-  posts: BlogPost[];
+  posts: BlogPost[],
   stats: {
-    totalPosts: number;
-    totalCategories: number;
+    totalPosts: number,
+    totalCategories: number,
     categories: Array<{
-      name: string;
-      count: number;
-    }>;
-  };
+      name: string,
+      count: number
+    }>
+  }
 }
 
 interface BlogPageClientProps {
-  blogData: BlogData;
+  blogData: BlogData
 }
 
 export default function BlogPageClient({ blogData }: BlogPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const filteredPosts = blogData.posts.filter(post =>
-    selectedCategory === 'all' || post.category === selectedCategory
-  );
+  const filteredPosts = blogData.posts.filter(post => selectedCategory === 'all' || post.category === selectedCategory);
 
   // Handle empty data
-  if (!blogData || !blogData.posts || blogData.posts.length === 0) {
+  if (blogData.posts.length === 0) {
     return (
       <div className="min-h-screen text-white py-20 relative z-20">
         <div className="max-w-6xl mx-auto px-4 text-center">
@@ -78,22 +76,24 @@ export default function BlogPageClient({ blogData }: BlogPageClientProps) {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <button
+            type="button"
             onClick={() => setSelectedCategory('all')}
             className={`px-4 py-2 rounded-full text-sm transition-all ${selectedCategory === 'all'
               ? 'bg-white text-black'
               : 'bg-white/10 text-white hover:bg-white/20'
-              }`}
+            }`}
           >
             All ({blogData.posts.length})
           </button>
           {blogData.stats.categories.map((category) => (
             <button
+              type="button"
               key={category.name}
               onClick={() => setSelectedCategory(category.name)}
               className={`px-4 py-2 rounded-full text-sm transition-all capitalize ${selectedCategory === category.name
                 ? 'bg-white text-black'
                 : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
+              }`}
             >
               {getCategoryDisplayName(category.name)} ({category.count})
             </button>
@@ -117,9 +117,9 @@ export default function BlogPageClient({ blogData }: BlogPageClientProps) {
 // Helper function to get display name for categories
 function getCategoryDisplayName(category: string): string {
   const categoryMap: Record<string, string> = {
-    'frontend': 'Frontend',
-    'backend': 'Backend',
-    'design': 'UI/UX Design',
+    frontend: 'Frontend',
+    backend: 'Backend',
+    design: 'UI/UX Design',
     'miscellaneous-notes': 'Notes'
   };
 

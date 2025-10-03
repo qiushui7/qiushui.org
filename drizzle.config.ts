@@ -5,8 +5,8 @@ export default defineConfig({
   out: './supabase/migrations',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.POSTGRES_URL!,
+    url: process.env.POSTGRES_URL!
   },
   verbose: true,
-  strict: true,
+  strict: true
 });

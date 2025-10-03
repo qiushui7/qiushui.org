@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint --format=sukka .",
     "clean": "rm -rf .next node_modules/.cache",
     "type-check": "tsc --noEmit",
     "db:gen": "drizzle-kit generate",
@@ -34,6 +34,8 @@
     "shiki": "^3.9.2"
   },
   "devDependencies": {
+    "@eslint-sukka/node": "^6.18.2",
+    "@eslint-sukka/react": "^6.18.2",
     "@eslint/eslintrc": "^3",
     "@shikijs/transformers": "^3.9.2",
     "@tailwindcss/postcss": "^4",
@@ -44,6 +46,8 @@
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
+    "eslint-config-sukka": "^7.2.1",
+    "eslint-formatter-sukka": "^6.18.2",
     "schema-dts": "^1.1.5",
     "tailwindcss": "^4",
     "typescript": "^5"

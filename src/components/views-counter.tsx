@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 
 interface ViewCounterProps {
-  slug: string;
-  category: string;
+  slug: string,
+  category: string
 }
 
 export default function ViewCounter({ slug, category }: ViewCounterProps) {
@@ -13,7 +13,7 @@ export default function ViewCounter({ slug, category }: ViewCounterProps) {
 
   useEffect(() => {
     const postId = `${category}/${slug}`;
-    
+
     // 获取当前浏览量
     const fetchViews = async () => {
       try {
@@ -34,13 +34,13 @@ export default function ViewCounter({ slug, category }: ViewCounterProps) {
       // 检查是否已经在本次会话中浏览过
       const viewedKey = `viewed_${postId}`;
       const hasViewed = sessionStorage.getItem(viewedKey);
-      
+
       if (!hasViewed) {
         try {
           const response = await fetch(`/api/views/${encodeURIComponent(postId)}`, {
-            method: 'POST',
+            method: 'POST'
           });
-          
+
           if (response.ok) {
             const data = await response.json();
             setViews(data.views);
@@ -54,7 +54,7 @@ export default function ViewCounter({ slug, category }: ViewCounterProps) {
     };
 
     fetchViews();
-    
+
     // 延迟增加浏览量，确保不是误触
     const timer = setTimeout(() => {
       incrementViews();
@@ -70,7 +70,7 @@ export default function ViewCounter({ slug, category }: ViewCounterProps) {
           <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
           <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
         </svg>
-        <span className="w-8 h-4 bg-gray-600 animate-pulse rounded"></span>
+        <span className="w-8 h-4 bg-gray-600 animate-pulse rounded" />
       </span>
     );
   }

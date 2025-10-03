@@ -1,28 +1,27 @@
 import { NextResponse } from 'next/server';
 import { getAllPosts, getBlogStats } from '@/lib/blog';
 
-export async function GET() {
+export function GET() {
   try {
-    const [posts, stats] = await Promise.all([
+    const [posts, stats] = [
       getAllPosts(),
       getBlogStats()
-    ]);
+    ];
 
     return NextResponse.json({
       success: true,
       data: {
         posts,
-        stats,
-      },
+        stats
+      }
     });
-  } catch (error) {
-    console.error('Error fetching blog posts:', error);
+  } catch {
     return NextResponse.json(
       {
         success: false,
-        error: 'Failed to fetch blog posts',
+        error: 'Failed to fetch blog posts'
       },
       { status: 500 }
     );
   }
-} 
+}

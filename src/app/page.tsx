@@ -1,58 +1,48 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import Hero from "../components/Hero";
-import { motion } from "framer-motion";
-import ProfileCard from "../components/profile-card";
-import ExperienceTimeline from "../components/ExperienceTimeline";
+import Hero from '@/components/home-hero';
+import { motion } from 'framer-motion';
+import ProfileCard from '@/components/profile-card';
+import ExperienceTimeline from '@/components/experience-time-line';
 import type { WebSite, WithContext } from 'schema-dts';
 
 const jsonLd: WithContext<WebSite> = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Qiushui",
-  "url": "https://www.qiushui.org",
-  "image": "https://www.qiushui.org/photo-no-bg.png",
-  "description": "Qiushui's personal blog",
-  "author": {
-    "@type": "Person",
-    "name": "Qiushui"
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Qiushui',
+  url: 'https://www.qiushui.org',
+  image: 'https://www.qiushui.org/photo-no-bg.png',
+  description: 'Qiushui\'s personal blog',
+  author: {
+    '@type': 'Person',
+    name: 'Qiushui'
   },
-  "publisher": {
-    "@type": "Person",
-    "name": "Qiushui"
+  publisher: {
+    '@type': 'Person',
+    name: 'Qiushui'
   },
-  "keywords": ["Qiushui", "personal blog", "tech blog", "frontend development", "product development", "open source projects"]
+  keywords: ['Qiushui', 'personal blog', 'tech blog', 'frontend development', 'product development', 'open source projects']
+};
+
+function handleContactClick() {
+  window.location.assign('mailto:qiushui030716@gmail.com');
 };
 
 export default function Home() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const handleContactClick = () => {
-    window.location.href = 'mailto:qiushui030716@gmail.com';
-  };
-
-  if (!isClient) {
-    return <div className="min-h-screen bg-black" />;
-  }
-
   return (
     <>
       <script
         id="json-ld-home"
         type="application/ld+json"
+        // eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml -- JSON-LD
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen text-white relative overflow-hidden">
         {/* 主内容区域 */}
         <main className="relative z-10 px-4 md:px-8 lg:px-12">
           {/* Hero Section */}
-          <Hero isClient={isClient} />
-          <div className="mx-auto max-w-7xl" >
+          <Hero />
+          <div className="mx-auto max-w-7xl">
             <div className="flex flex-col lg:flex-row lg:gap-16 min-h-screen">
               {/* 左侧：ProfileCard */}
               <motion.div
@@ -71,13 +61,13 @@ export default function Home() {
                     title="Software Engineer"
                     handle="benjamin"
                     status="Online"
-                    showUserInfo={true}
-                    enableTilt={true}
+                    showUserInfo
+                    enableTilt
                     onContactClick={handleContactClick}
                   />
                 </div>
               </motion.div>
-              
+
               {/* 右侧：经历时间线 */}
               <motion.div
                 className="flex-1 min-w-0 h-[calc(100vh-10rem)] mt-4 lg:mt-32"

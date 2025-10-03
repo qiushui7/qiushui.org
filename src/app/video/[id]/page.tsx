@@ -1,12 +1,11 @@
 import { notFound } from 'next/navigation';
 import { db, videos as videosTable, vlogCategories as vlogCategoriesTable } from '@/lib/db';
 import { eq } from 'drizzle-orm';
-import VideoDetailClient from './VideoDetailClient';
-
+import VideoDetailClient from './video-detail-client';
 
 interface Props {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<{ id: string }>,
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -17,15 +16,13 @@ export async function generateMetadata({ params }: Props) {
       title: videosTable.title,
       description: videosTable.description,
       thumbnailUrl: videosTable.thumbnailUrl,
-      location: videosTable.location,
-    }).from(videosTable)
-      .where(eq(videosTable.id, id))
-      .limit(1);
+      location: videosTable.location
+    }).from(videosTable).where(eq(videosTable.id, id)).limit(1);
 
     if (!video[0]) {
       return {
         title: 'Video Not Found | qiushui',
-        description: 'The requested video could not be found.',
+        description: 'The requested video could not be found.'
       };
     }
 
@@ -35,13 +32,13 @@ export async function generateMetadata({ params }: Props) {
       openGraph: {
         title: video[0].title,
         description: video[0].description || 'Watch this video on qiushui\'s vlog',
-        images: video[0].thumbnailUrl ? [video[0].thumbnailUrl] : [],
-      },
+        images: video[0].thumbnailUrl ? [video[0].thumbnailUrl] : []
+      }
     };
   } catch {
     return {
       title: 'Video Not Found | qiushui',
-      description: 'The requested video could not be found.',
+      description: 'The requested video could not be found.'
     };
   }
 }
@@ -64,13 +61,10 @@ async function getVideoData(id: string) {
       location: videosTable.location,
       isPublished: videosTable.isPublished,
       categoryName: vlogCategoriesTable.name,
-      categorySlug: vlogCategoriesTable.slug,
-    }).from(videosTable)
-      .leftJoin(vlogCategoriesTable, eq(videosTable.categoryId, vlogCategoriesTable.id))
-      .where(eq(videosTable.id, id))
-      .limit(1);
+      categorySlug: vlogCategoriesTable.slug
+    }).from(videosTable).leftJoin(vlogCategoriesTable, eq(videosTable.categoryId, vlogCategoriesTable.id)).where(eq(videosTable.id, id)).limit(1);
 
-    if (!videoData[0] || !videoData[0].isPublished) {
+    if (!videoData[0]?.isPublished) {
       return null;
     }
 

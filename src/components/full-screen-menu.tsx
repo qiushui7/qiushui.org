@@ -5,18 +5,17 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface FullScreenMenuProps {
-  isMenuOpen: boolean;
-  menuItems: { href: string; label: string }[];
-  setIsMenuOpen: (isOpen: boolean) => void;
+  isMenuOpen: boolean,
+  menuItems: Array<{ href: string, label: string }>,
+  setIsMenuOpenAction: (isOpen: boolean) => void
 }
 
-export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpen }: FullScreenMenuProps) {
-
+export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpenAction }: FullScreenMenuProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleContactClick = () => {
-    window.location.href = 'mailto:qiushui030716@gmail.com';
-    setIsMenuOpen(false);
+    window.location.assign('mailto:qiushui030716@gmail.com');
+    setIsMenuOpenAction(false);
   };
 
   // 禁用/启用滚动
@@ -43,14 +42,14 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpen }:
       {isMenuOpen && (
         <motion.div
           className="fixed inset-0 z-40 bg-black/95 backdrop-blur-md"
-          initial={{ opacity: 0, y: "-100%" }}
+          initial={{ opacity: 0, y: '-100%' }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ y: "-100%" }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          exit={{ y: '-100%' }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
         >
-          <motion.div 
+          <motion.div
             className="absolute top-8 right-4 md:right-8 lg:right-12 z-50 flex items-center space-x-2 text-white hover:text-gray-300 transition-colors cursor-pointer"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={() => setIsMenuOpenAction(false)}
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
           >
@@ -58,11 +57,11 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpen }:
             <motion.button
               className="w-5 h-5"
               animate={{ opacity: 1, scale: 1, rotate: isHovered ? 90 : -90 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
             >
               <div className="relative w-5 h-5">
-                <div className="w-5 h-px bg-current rotate-45 absolute top-1/2 left-0 -translate-y-1/2"></div>
-                <div className="w-5 h-px bg-current -rotate-45 absolute top-1/2 left-0 -translate-y-1/2"></div>
+                <div className="w-5 h-px bg-current rotate-45 absolute top-1/2 left-0 -translate-y-1/2" />
+                <div className="w-5 h-px bg-current -rotate-45 absolute top-1/2 left-0 -translate-y-1/2" />
               </div>
             </motion.button>
           </motion.div>
@@ -75,7 +74,7 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpen }:
               exit={{ y: 50, scale: 0.9 }}
               transition={{
                 duration: 0.3,
-                ease: "easeInOut"
+                ease: 'easeInOut'
               }}
             >
               {/* 菜单项 */}
@@ -88,11 +87,11 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpen }:
                     exit={{ y: 30, rotateX: -45, scale: 0.8 }}
                     transition={{
                       duration: 0.4,
-                      delay: isMenuOpen ? 0.1 + index * 0.1 : 0.05 + (menuItems.length - index - 1) * 0.05,
-                      ease: "easeInOut"
+                      delay: 0.1 + index * 0.1,
+                      ease: 'easeInOut'
                     }}
                   >
-                    <Link href={href} onClick={() => setIsMenuOpen(false)}>
+                    <Link href={href} onClick={() => setIsMenuOpenAction(false)}>
                       <motion.div
                         className="text-4xl md:text-6xl font-bold text-white uppercase tracking-wide hover:text-gray-300 transition-colors duration-300 relative group"
                         whileHover={{ scale: 1.05, y: -5 }}
@@ -101,7 +100,7 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpen }:
                         {label}
                         <motion.div
                           className="absolute bottom-0 left-1/2 w-0 h-1 bg-white"
-                          whileHover={{ width: "100%", x: "-50%" }}
+                          whileHover={{ width: '100%', x: '-50%' }}
                           transition={{ duration: 0.3 }}
                         />
                       </motion.div>
@@ -117,8 +116,8 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpen }:
                 exit={{ y: 30, scale: 0.8 }}
                 transition={{
                   duration: 0.4,
-                  delay: isMenuOpen ? 0.5 : 0.1,
-                  ease: "easeInOut"
+                  delay: 0.5,
+                  ease: 'easeInOut'
                 }}
                 className="pt-8"
               >

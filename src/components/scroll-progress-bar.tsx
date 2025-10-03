@@ -10,7 +10,9 @@ export default function ScrollProgressBar() {
       const scrollTop = window.scrollY;
       const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrollTop / documentHeight) * 100;
-      setScrollProgress(Math.min(progress, 100));
+      return Promise.resolve().then(() => {
+        setScrollProgress(Math.min(progress, 100));
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

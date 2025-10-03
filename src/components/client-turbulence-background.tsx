@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import TurbulenceBackground from './TurbulenceBackground';
+import TurbulenceBackground from './turbulence-background';
+import { useEffect, useState } from 'react';
 
 export default function ClientTurbulenceBackground() {
   const [isClient, setIsClient] = useState(false);
@@ -10,5 +10,5 @@ export default function ClientTurbulenceBackground() {
     setIsClient(true);
   }, []);
 
-  return <TurbulenceBackground isClient={isClient} />;
+  return isClient ? <TurbulenceBackground /> : null;
 }
