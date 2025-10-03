@@ -5,30 +5,39 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import Link from 'next/link';
-
-function Icon({ src, alt }: { src: string, alt: string }) {
-  return (
-    <Image src={src} alt={alt} width={24} height={24} />
-  );
-}
+import Aws from '@/assets/icons/aws';
+import Html5 from '@/assets/icons/html-5';
+import Css3 from '@/assets/icons/css-3';
+import Nextjs from '@/assets/icons/nextjs';
+import Vue from '@/assets/icons/vue';
+import Postgresql from '@/assets/icons/postgresql';
+import Tailwind from '@/assets/icons/tailwind';
+import Nestjs from '@/assets/icons/nestjs';
+import Nodejs from '@/assets/icons/nodejs';
+import Js from '@/assets/icons/js';
+import Ts from '@/assets/icons/ts';
+import React from '@/assets/icons/react';
+import Docker from '@/assets/icons/docker';
+import Solidity from '@/assets/icons/solidity';
 
 export default function Hero() {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
 
   const skills = [
-    { name: 'HTML', icon: <Icon src="/html-5.svg" alt="HTML" /> },
-    { name: 'CSS', icon: <Icon src="/css-3.svg" alt="CSS" /> },
-    { name: 'JavaScript', icon: <Icon src="/js.svg" alt="JavaScript" /> },
-    { name: 'TypeScript', icon: <Icon src="/ts.svg" alt="TypeScript" /> },
-    { name: 'React.js', icon: <Icon src="/react.svg" alt="React" /> },
-    { name: 'Vue.js', icon: <Icon src="/vue.svg" alt="Vue.js" /> },
-    { name: 'Next.js', icon: <Icon src="/nextjs.svg" alt="Next.js" /> },
-    { name: 'Node.js', icon: <Icon src="/nodejs.svg" alt="Node.js" /> },
-    { name: 'Nest.js', icon: <Icon src="/nestjs.svg" alt="Nest.js" /> },
-    { name: 'Tailwind', icon: <Icon src="/tailwind.svg" alt="Tailwind" /> },
-    { name: 'PostgreSQL', icon: <Icon src="/postgresql.svg" alt="PostgreSQL" /> },
-    { name: 'Docker', icon: <Icon src="/docker.svg" alt="Docker" /> },
-    { name: 'AWS', icon: <Icon src="/aws.svg" alt="AWS" /> }
+    { name: 'HTML', icon: <Html5 /> },
+    { name: 'CSS', icon: <Css3 /> },
+    { name: 'JavaScript', icon: <Js /> },
+    { name: 'TypeScript', icon: <Ts /> },
+    { name: 'React.js', icon: <React /> },
+    { name: 'Vue.js', icon: <Vue /> },
+    { name: 'Next.js', icon: <Nextjs /> },
+    { name: 'Node.js', icon: <Nodejs /> },
+    { name: 'Nest.js', icon: <Nestjs /> },
+    { name: 'Tailwind', icon: <Tailwind /> },
+    { name: 'PostgreSQL', icon: <Postgresql /> },
+    { name: 'Docker', icon: <Docker /> },
+    { name: 'AWS', icon: <Aws /> },
+    { name: 'Solidity', icon: <Solidity /> }
   ];
 
   return (
@@ -127,11 +136,38 @@ export default function Hero() {
           transition={{ duration: 0.4, delay: 0.3, ease: 'easeOut' }}
         >
           <Marquee
-            speed={40}
+            speed={20}
             pauseOnHover
-            className="py-4"
+            className="py-2"
           >
             {skills.map((skill) => (
+              <motion.span
+                key={skill.name}
+                className="skill-tag px-4 py-2 bg-black/5 border border-white/10 text-sm hover:bg-white/10 hover:text-white transition-all duration-300 cursor-default whitespace-nowrap mx-2 flex items-center gap-2"
+                onMouseEnter={() => setHoveredSkill(skill.name)}
+                onMouseLeave={() => setHoveredSkill(null)}
+                animate={{
+                  opacity: hoveredSkill && hoveredSkill !== skill.name ? 0.3 : 1,
+                  scale: hoveredSkill === skill.name ? 1.1 : 1,
+                  filter: hoveredSkill && hoveredSkill !== skill.name ? 'blur(1px)' : 'blur(0px)'
+                }}
+                transition={{
+                  duration: 0.3,
+                  ease: 'easeOut'
+                }}
+              >
+                <span className="w-6 h-6">{skill.icon}</span>
+                {skill.name}
+              </motion.span>
+            ))}
+          </Marquee>
+          <Marquee
+            speed={20}
+            direction="right"
+            pauseOnHover
+            className="py-2"
+          >
+            {skills.reverse().map((skill) => (
               <motion.span
                 key={skill.name}
                 className="skill-tag px-4 py-2 bg-black/5 border border-white/10 text-sm hover:bg-white/10 hover:text-white transition-all duration-300 cursor-default whitespace-nowrap mx-2 flex items-center gap-2"
