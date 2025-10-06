@@ -42,7 +42,20 @@ function getBlogPosts(): BlogPost[] {
   return posts;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+async function getVideoData(): Promise<Array<{ id: string }>> {
+  try {
+    const res = await fetch('https://www.qiushui.org/api/video');
+    if (!res.ok) {
+      throw new Error(`Failed to fetch video data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    return data.videos;
+  } catch {
+    return [];
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.qiushui.org';
   const posts = getBlogPosts();
 
@@ -58,6 +71,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.8
+    },
+    {
+      url: `${baseUrl}/video`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.8
     }
   ];
 
@@ -69,15 +88,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/blog/${category}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: 0.7
+    priority: 0.8
   }));
 
   const postRoutes = posts.map(post => ({
     url: `${baseUrl}/blog/${post.category}/${post.slug}`,
     lastModified: new Date(post.date),
     changeFrequency: 'monthly' as const,
-    priority: 0.6
+    priority: 0.8
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...postRoutes];
+  const videos = await getVideoData();
+  const videoRoutes = videos.map(video => ({
+    url: `${baseUrl}/video/${video.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8
+  }));
+
+  return [...staticRoutes, ...categoryRoutes, ...postRoutes, ...videoRoutes];
 }

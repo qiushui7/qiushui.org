@@ -46,10 +46,9 @@ export default function VideoPlayer({ url, className = '' }: VideoPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const hideControlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const setPlayerRef = useCallback((player: HTMLVideoElement) => {
+  const setPlayerRef = useCallback((player: HTMLMediaElement | null) => {
     if (!player) return;
     playerRef.current = player;
-    console.log(player);
   }, []);
 
   const handlePlay = useCallback(() => {
