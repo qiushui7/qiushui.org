@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/'
     },
-    sitemap: 'https://www.cloudpilot.ai/sitemap.xml'
+    sitemap: 'https://www.qiushui.org/sitemap.xml'
   };
 };
