@@ -5,29 +5,11 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import type { Video } from '@/lib/db';
 import { format } from 'date-fns/format';
+import VideoPlayer from '@/components/video-player';
 
 interface VideoDetailClientProps {
   video: Video & { categoryName: string | null, categorySlug: string | null }
 }
-
-function getVideoEmbedUrl(url: string): string {
-  // Handle YouTube URLs
-  if (url.includes('youtube.com/watch?v=')) {
-    const videoId = url.split('v=')[1]?.split('&')[0];
-    return `https://www.youtube.com/embed/${videoId}`;
-  }
-  if (url.includes('youtu.be/')) {
-    const videoId = url.split('youtu.be/')[1]?.split('?')[0];
-    return `https://www.youtube.com/embed/${videoId}`;
-  }
-  // Handle Vimeo URLs
-  if (url.includes('vimeo.com/')) {
-    const videoId = url.split('vimeo.com/')[1]?.split('?')[0];
-    return `https://player.vimeo.com/video/${videoId}`;
-  }
-  // Return original URL for other video sources
-  return url;
-};
 
 export default function VideoDetailClient({ video }: VideoDetailClientProps) {
   const [views, setViews] = useState(video.viewCount || 0);
@@ -124,7 +106,6 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
               )}
             </div>
           </div>
-          {/* todo: use player component */}
           {/* Video Player */}
           <motion.div
             className="lg:col-span-2"
@@ -132,14 +113,11 @@ export default function VideoDetailClient({ video }: VideoDetailClientProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="relative aspect-video bg-black rounded-lg overflow-hidden mb-6">
-              <iframe
-                // sandbox="allow-same-origin allow-scripts allow-popups"
-                src={getVideoEmbedUrl(video.videoUrl)}
+            <div className="relative aspect-video mb-6">
+              <VideoPlayer
+                url={video.videoUrl}
                 title={video.title}
                 className="w-full h-full"
-                allowFullScreen
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />
             </div>
 
