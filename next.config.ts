@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'qiushui.org'
+        hostname: 'r2.qiushui.org'
       }
     ]
   }
