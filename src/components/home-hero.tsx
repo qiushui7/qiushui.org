@@ -22,6 +22,7 @@ import Solidity from '@/assets/icons/solidity';
 
 export default function Hero() {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const [isMarqueePaused, setIsMarqueePaused] = useState(false);
 
   const skills = [
     { name: 'HTML', icon: <Html5 /> },
@@ -137,15 +138,22 @@ export default function Hero() {
         >
           <Marquee
             speed={20}
-            pauseOnHover
+            pauseOnHover={false}
+            play={!isMarqueePaused}
             className="py-2"
           >
             {skills.map((skill) => (
               <motion.span
                 key={skill.name}
-                className="skill-tag px-4 py-2 bg-black/5 border border-white/10 text-sm hover:bg-white/10 hover:text-white transition-all duration-300 cursor-default whitespace-nowrap mx-2 flex items-center gap-2"
-                onMouseEnter={() => setHoveredSkill(skill.name)}
-                onMouseLeave={() => setHoveredSkill(null)}
+                className="skill-tag px-4 py-2 text-sm hover:text-white transition-all duration-300 cursor-default whitespace-nowrap mx-2 flex items-center gap-2"
+                onMouseEnter={() => {
+                  setHoveredSkill(skill.name);
+                  setIsMarqueePaused(true);
+                }}
+                onMouseLeave={() => {
+                  setHoveredSkill(null);
+                  setIsMarqueePaused(false);
+                }}
                 animate={{
                   opacity: hoveredSkill && hoveredSkill !== skill.name ? 0.3 : 1,
                   scale: hoveredSkill === skill.name ? 1.1 : 1,
@@ -164,22 +172,29 @@ export default function Hero() {
           <Marquee
             speed={20}
             direction="right"
-            pauseOnHover
+            pauseOnHover={false}
+            play={!isMarqueePaused}
             className="py-2"
           >
             {skills.reverse().map((skill) => (
               <motion.span
                 key={skill.name}
-                className="skill-tag px-4 py-2 bg-black/5 border border-white/10 text-sm hover:bg-white/10 hover:text-white transition-all duration-300 cursor-default whitespace-nowrap mx-2 flex items-center gap-2"
-                onMouseEnter={() => setHoveredSkill(skill.name)}
-                onMouseLeave={() => setHoveredSkill(null)}
+                className="skill-tag px-4 py-2 text-sm hover:text-white transition-all duration-300 cursor-default whitespace-nowrap mx-2 flex items-center gap-2"
+                onMouseEnter={() => {
+                  setHoveredSkill(skill.name + 'reverse');
+                  setIsMarqueePaused(true);
+                }}
+                onMouseLeave={() => {
+                  setHoveredSkill(null);
+                  setIsMarqueePaused(false);
+                }}
                 animate={{
-                  opacity: hoveredSkill && hoveredSkill !== skill.name ? 0.3 : 1,
-                  scale: hoveredSkill === skill.name ? 1.1 : 1,
-                  filter: hoveredSkill && hoveredSkill !== skill.name ? 'blur(1px)' : 'blur(0px)'
+                  opacity: hoveredSkill && hoveredSkill !== skill.name + 'reverse' ? 0.3 : 1,
+                  scale: hoveredSkill === skill.name + 'reverse' ? 1.1 : 1,
+                  filter: hoveredSkill && hoveredSkill !== skill.name + 'reverse' ? 'blur(1px)' : 'blur(0px)'
                 }}
                 transition={{
-                  duration: 0.3,
+                  duration: 0.2,
                   ease: 'easeOut'
                 }}
               >
