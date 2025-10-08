@@ -145,3 +145,13 @@ export function getBlogStats() {
     categories: stats
   };
 }
+
+export function getLatestBlog(): BlogPost | null {
+  const allPosts = getAllPosts();
+  return allPosts.length > 0 ? allPosts[0] : null;
+}
+
+export function getLatestBlogs(count = 3): BlogPost[] {
+  const allPosts = getAllPosts();
+  return allPosts.slice(0, count);
+}

@@ -205,7 +205,7 @@ export default function Hero() {
           </Marquee>
         </motion.div>
 
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
           <div className="flex flex-col items-center space-y-2 text-gray-500">
             <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
             <div className="w-px h-8 bg-gradient-to-b from-white/30 to-transparent" />
