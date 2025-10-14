@@ -12,4 +12,8 @@ module.exports = require('eslint-config-sukka').sukka({
       'supabase/*'
     ]
   }
+}, {
+  rules: {
+    '@stylistic/linebreak-style': 'off'
+  }
 });
