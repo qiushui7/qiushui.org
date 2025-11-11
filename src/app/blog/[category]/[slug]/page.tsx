@@ -52,7 +52,16 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       description: post.excerpt || `${post.title} - A blog post by ${post.author}`,
       type: 'article',
       publishedTime: post.date,
-      authors: [post.author]
+      authors: [post.author],
+      images: `https://www.qiushui.org/api/og?title=${post.title}&description=${post.excerpt}`,
+      siteName: 'qiushui.org',
+      url: `https://www.qiushui.org/blog/${category}/${slug}`
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt || `${post.title} - A blog post by ${post.author}`,
+      images: `https://www.qiushui.org/api/og?title=${post.title}&description=${post.excerpt}`
     }
   };
 }

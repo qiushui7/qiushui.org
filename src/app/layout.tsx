@@ -23,8 +23,25 @@ export const metadata: Metadata = {
   description: 'Technical innovator · Product developer · Open source contributor\'s personal blog, sharing programming techniques, product insights and development experience',
   keywords: ['personal blog', 'tech blog', 'frontend development', 'product development', 'open source projects'],
   authors: [{ name: 'qiushui' }],
-  creator: 'qiushui',
-  publisher: 'qiushui',
+  creator: 'qiushui7',
+  publisher: 'qiushui7',
+  openGraph: {
+    title: 'Qiushui - Personal Blog',
+    description: 'Qiushui\'s personal blog',
+    url: 'https://www.qiushui.org',
+    siteName: 'qiushui.org',
+    images: [
+      { url: 'https://r2.qiushui.org/qiushui-org.png' }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Qiushui - Personal Blog',
+    description: 'Qiushui\'s personal blog',
+    images: [
+      { url: 'https://r2.qiushui.org/qiushui-org.png' }
+    ]
+  },
   icons: {
     icon: [
       {

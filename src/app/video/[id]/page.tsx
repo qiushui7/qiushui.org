@@ -32,7 +32,15 @@ export async function generateMetadata({ params }: Props) {
       openGraph: {
         title: video[0].title,
         description: video[0].description || 'Watch this video on qiushui\'s vlog',
-        images: video[0].thumbnailUrl ? [video[0].thumbnailUrl] : []
+        images: `https://www.qiushui.org/api/og?title=${video[0].title}&description=${video[0].description}&image=${video[0].thumbnailUrl}`,
+        siteName: 'qiushui.org',
+        url: `https://www.qiushui.org/video/${id}`
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: video[0].title,
+        description: video[0].description || 'Watch this video on qiushui\'s vlog',
+        images: `https://www.qiushui.org/api/og?title=${video[0].title}&description=${video[0].description}&image=${video[0].thumbnailUrl}`
       }
     };
   } catch {
