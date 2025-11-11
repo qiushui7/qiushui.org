@@ -96,7 +96,25 @@ export async function GET(request: Request) {
               </div>
             </div>
 
-            <div tw="flex items-center justify-center" style={{ width: '650px' }}>
+            <div tw="flex flex-col" style={{ width: '650px' }}>
+              {/* Author section */}
+              <div tw="flex items-center justify-end mb-6">
+                <span tw="text-xl text-gray-300 mr-3">by</span>
+                {/* eslint-disable-next-line @next/next/no-img-element -- OG Image requires standard img tag */}
+                <img
+                  src="https://qiushui.org/ava.jpg"
+                  alt="Author"
+                  tw="rounded-full"
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    objectFit: 'cover',
+                    border: '2px solid white'
+                  }}
+                />
+              </div>
+
+              {/* Main image */}
               <div
                 tw="flex overflow-hidden"
                 style={{
