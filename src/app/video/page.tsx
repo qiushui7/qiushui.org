@@ -4,7 +4,10 @@ import { desc, eq, count } from 'drizzle-orm';
 
 export const metadata = {
   title: 'Videos | qiushui',
-  description: 'Video blogs sharing my journey, thoughts, and experiences'
+  description: 'Video blogs sharing my journey, thoughts, and experiences',
+  alternates: {
+    canonical: '/video'
+  }
 };
 
 export const revalidate = 60;

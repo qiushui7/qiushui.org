@@ -3,6 +3,14 @@ import Recommendation from '@/components/recommendation';
 import ProfessionJourney from '@/components/profession-journey';
 import type { WebSite, WithContext } from 'schema-dts';
 
+export const metadata = {
+  title: 'qiushui - Personal Blog',
+  description: 'Qiushui\'s personal blog',
+  alternates: {
+    canonical: '/'
+  }
+};
+
 const jsonLd: WithContext<WebSite> = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',

@@ -47,6 +47,9 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   return {
     title: `${post.title} | qiushui`,
     description: post.excerpt || `${post.title} - A blog post by ${post.author}`,
+    alternates: {
+      canonical: `/blog/${category}/${slug}`
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt || `${post.title} - A blog post by ${post.author}`,

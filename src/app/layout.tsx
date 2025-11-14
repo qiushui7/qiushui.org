@@ -19,6 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.qiushui.org'),
   title: 'qiushui - Personal Blog',
   description: 'Technical innovator · Product developer · Open source contributor\'s personal blog, sharing programming techniques, product insights and development experience',
   keywords: ['personal blog', 'tech blog', 'frontend development', 'product development', 'open source projects'],

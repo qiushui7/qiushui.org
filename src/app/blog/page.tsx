@@ -3,7 +3,10 @@ import BlogPageClient from './blog-page-client';
 
 export const metadata = {
   title: 'Blog | qiushui',
-  description: 'Thoughts, tutorials, and insights about web development'
+  description: 'Thoughts, tutorials, and insights about web development',
+  alternates: {
+    canonical: '/blog'
+  }
 };
 
 export const revalidate = 60;

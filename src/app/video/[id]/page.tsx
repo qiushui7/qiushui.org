@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: Props) {
     return {
       title: `${video[0].title} | qiushui`,
       description: video[0].description || 'Watch this video on qiushui\'s vlog',
+      alternates: {
+        canonical: `/video/${id}`
+      },
       openGraph: {
         title: video[0].title,
         description: video[0].description || 'Watch this video on qiushui\'s vlog',
