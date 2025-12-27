@@ -1,12 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/home-header';
-import Footer from '@/components/home-footer';
-import ClientTurbulenceBackground from '@/components/client-turbulence-background';
-import ScrollProgressBar from '@/components/scroll-progress-bar';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import SiteShell from '@/components/site-shell';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -71,15 +66,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
       >
-        <Analytics />
-        <SpeedInsights />
-        <ScrollProgressBar />
-        <ClientTurbulenceBackground />
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );

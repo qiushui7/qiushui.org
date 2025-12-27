@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import MobileMenu from './mobile-menu';
 import FullScreenMenu from './full-screen-menu';
+import { useUiChrome } from './ui-chrome';
 
 const menuItems = [
   { href: '/', label: 'Home' },
@@ -16,7 +17,7 @@ const menuItems = [
 export default function Header() {
   const [scrollY, setScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isFullScreenMenuOpen, setIsFullScreenMenuOpen] = useState(false);
+  const { isFullScreenMenuOpen, setIsFullScreenMenuOpen } = useUiChrome();
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -170,15 +171,12 @@ export default function Header() {
                 // 原始菜单
                 <>
                   {menuItems.map(({ href, label }) => (
-                    <Link key={href} href={href}>
-                      <motion.div
-                        className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative group"
-                        whileHover={{ y: -2 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        {label}
-                        <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full" />
-                      </motion.div>
+                    <Link
+                      key={href}
+                      href={href}
+                      className="text-sm uppercase tracking-widest text-white/70 hover:text-white transition-colors duration-300 relative inline-block after:absolute after:left-0 after:bottom-0 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-500 hover:after:w-full"
+                    >
+                      {label}
                     </Link>
                   ))}
                 </>
