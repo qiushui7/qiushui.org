@@ -1,15 +1,9 @@
 import type { NextConfig } from 'next';
 import createMDX from '@next/mdx';
-import remarkFrontmatter from 'remark-frontmatter';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  experimental: {
-    reactCompiler: true
-  },
-  eslint: {
-    ignoreDuringBuilds: true
-  },
+  reactCompiler: true,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {
     remotePatterns: [
@@ -23,7 +17,7 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [remarkFrontmatter],
+    remarkPlugins: ['remark-frontmatter'],
     rehypePlugins: []
   }
 });
