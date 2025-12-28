@@ -33,7 +33,7 @@ function SiteShellContent({ children }: { children: React.ReactNode }) {
     <motion.div
       className="relative"
       animate={{ y: isFullScreenMenuOpen ? '100vh' : 0 }}
-      transition={{ duration: 0.6, ease: [0.1, 0.1, 0.1, 0.1] }}
+      transition={{ duration: 0.2, ease: 'linear' }}
     >
       <main className="min-h-screen">{children}</main>
       <Footer />

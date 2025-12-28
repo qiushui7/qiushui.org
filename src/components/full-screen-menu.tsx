@@ -104,7 +104,7 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpenAct
           initial={{ opacity: 0, y: '-100%' }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ y: '-100%' }}
-          transition={{ duration: 0.6, ease: [0.1, 0.1, 0.1, 0.1] }}
+          transition={{ duration: 0.2, ease: 'linear' }}
         >
           <div className="absolute top-8 left-4 right-4 md:left-8 md:right-8 lg:left-12 lg:right-12 z-50 flex items-center justify-between">
             <Link
@@ -151,7 +151,7 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpenAct
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
-                duration: 0.35,
+                duration: 0.25,
                 ease: [0.2, 0.8, 0.2, 1]
               }}
             >
@@ -161,7 +161,7 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpenAct
                   className="w-full max-w-md md:max-w-none mx-auto"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: 0.12, ease: [0.2, 0.8, 0.2, 1] }}
+                  transition={{ duration: 0.3, delay: 0.08, ease: [0.2, 0.8, 0.2, 1] }}
                 >
                   <div className="relative w-full aspect-[4/5] overflow-hidden bg-white/5">
                     {/* Base (always visible) */}
@@ -183,7 +183,7 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpenAct
                         className="absolute inset-0"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.35, ease: 'linear' }}
+                        transition={{ duration: 0.25, ease: 'linear' }}
                         onAnimationComplete={() => setPendingFadeDone(true)}
                       >
                         <Image
@@ -213,8 +213,8 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpenAct
                           initial={{ opacity: 0, y: -18 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{
-                            duration: 0.45,
-                            delay: 0.24,
+                            duration: 0.3,
+                            delay: 0.15,
                             ease: [0.2, 0.8, 0.2, 1]
                           }}
                         >
@@ -231,8 +231,8 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpenAct
                                 initial={{ y: '-110%' }}
                                 animate={{ y: 0 }}
                                 transition={{
-                                  duration: 0.55,
-                                  delay: 0.24,
+                                  duration: 0.35,
+                                  delay: 0.15,
                                   ease: [0.2, 0.8, 0.2, 1]
                                 }}
                               >
@@ -250,8 +250,8 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpenAct
                     initial={{ opacity: 0, y: -18 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      duration: 0.45,
-                      delay: 0.24,
+                      duration: 0.3,
+                      delay: 0.15,
                       ease: [0.2, 0.8, 0.2, 1]
                     }}
                     className="mt-auto flex justify-start"
@@ -277,7 +277,7 @@ export default function FullScreenMenu({ isMenuOpen, menuItems, setIsMenuOpenAct
             className="absolute bottom-8 left-4 right-4 md:left-8 md:right-8 lg:left-12 lg:right-12 z-50 flex justify-center"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
           >
             <SocialLinksRow className="flex items-center space-x-6" />
           </motion.div>
