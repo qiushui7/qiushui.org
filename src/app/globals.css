@@ -10,6 +10,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-pixel: var(--font-geist-pixel-grid);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -208,6 +209,56 @@ body {
 
 .animate-marquee-slow {
   animation: marquee 60s linear infinite;
+}
+
+/* CRT Scanline Effect */
+@keyframes crt-beam {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+@keyframes crt-glow-mask {
+  0% {
+    -webkit-mask-position: 0% 100%;
+    mask-position: 0% 100%;
+  }
+  100% {
+    -webkit-mask-position: 0% 0%;
+    mask-position: 0% 0%;
+  }
+}
+
+.crt-text {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pixel bloom overlay - glow only visible in scan band */
+.crt-glow {
+  text-shadow:
+    0 0 4px currentColor,
+    0 0 10px currentColor,
+    0 0 20px rgba(255, 255, 255, 0.12);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 20%,
+    white 46%,
+    white 54%,
+    transparent 80%
+  );
+  -webkit-mask-size: 100% 300%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 20%,
+    white 46%,
+    white 54%,
+    transparent 80%
+  );
+  mask-size: 100% 300%;
+  mask-repeat: no-repeat;
+  animation: crt-glow-mask var(--crt-duration, 2.5s) ease-in-out var(--crt-delay, 0s) infinite alternate;
+  pointer-events: none;
 }
 
 /* Shiki code block styles */

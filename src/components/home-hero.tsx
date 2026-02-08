@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import Marquee from 'react-fast-marquee';
-import Link from 'next/link';
 import Aws from '@/assets/icons/aws';
 import Html5 from '@/assets/icons/html-5';
 import Css3 from '@/assets/icons/css-3';
@@ -59,10 +58,28 @@ export default function Hero() {
                 <span>Creative Developer</span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight">
-                <span className="block">CRAFTING</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">DIGITAL</span>
-                <span className="block">EXPERIENCES</span>
+              <h1 className="font-pixel text-3xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight">
+                <span
+                  className="crt-text block w-fit"
+                  style={{ '--crt-delay': '0s', '--crt-duration': '2.5s' } as React.CSSProperties}
+                >
+                  <span className="relative z-[1]">CRAFTING</span>
+                  <span className="absolute inset-0 crt-glow" aria-hidden="true">CRAFTING</span>
+                </span>
+                <span
+                  className="crt-text block w-fit"
+                  style={{ '--crt-delay': '0.8s', '--crt-duration': '3s' } as React.CSSProperties}
+                >
+                  <span className="relative z-[1]">DIGITAL</span>
+                  <span className="absolute inset-0 crt-glow" aria-hidden="true">DIGITAL</span>
+                </span>
+                <span
+                  className="crt-text block w-fit"
+                  style={{ '--crt-delay': '0.4s', '--crt-duration': '2.2s' } as React.CSSProperties}
+                >
+                  <span className="relative z-[1]">EXPERIENCES</span>
+                  <span className="absolute inset-0 crt-glow" aria-hidden="true">EXPERIENCES</span>
+                </span>
               </h1>
             </div>
 
@@ -73,28 +90,17 @@ export default function Hero() {
               </blockquote>
             </div>
 
-            {/* 行动按钮 */}
-            <div className="flex flex-wrap gap-4">
-              <button type="button" className="bg-white text-black px-6 lg:px-8 py-3 text-sm uppercase tracking-wide hover:bg-gray-200 transition-colors duration-150">
-                <Link href="/blog">
-                  View My Blog
-                </Link>
-              </button>
-              {/* <button className="border border-white/30 text-white px-6 lg:px-8 py-3 text-sm uppercase tracking-wide hover:bg-white hover:text-black transition-all duration-150">
-                Get In Touch
-              </button> */}
-            </div>
           </motion.div>
 
           {/* 右侧头像区域 */}
           <motion.div
-            className="flex justify-end order-1 lg:order-2 flex-1"
+            className="flex justify-center order-1 lg:order-2 flex-1"
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
           >
             <motion.div
-              className="relative avatar-container mr-4"
+              className="relative avatar-container"
               whileHover={{ scale: 1.05, rotate: 2 }}
               transition={{ duration: 0.1, ease: 'easeOut' }}
             >

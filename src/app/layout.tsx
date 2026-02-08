@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { GeistPixelGrid } from 'geist/font/pixel';
 import './globals.css';
 import SiteShell from '@/components/site-shell';
 
@@ -64,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
+        className={`${geistSans.variable} ${geistMono.variable} ${GeistPixelGrid.variable} antialiased bg-black`}
       >
         <SiteShell>{children}</SiteShell>
       </body>
