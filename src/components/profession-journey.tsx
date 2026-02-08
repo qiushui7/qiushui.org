@@ -1,18 +1,21 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import ProfileCard from '@/components/profile-card';
 import ExperienceCard from '@/components/experience-time-line';
-import type { Experience } from '@/components/experience-time-line';
+import IconCloudPilotAI from '@/assets/icons/cloudpilot-ai';
+import Baidu from '@/assets/icons/baidu';
+import Bytedance from '@/assets/icons/bytedance';
 
 function handleContactClick() {
   window.location.assign('mailto:qiushui030716@gmail.com');
 }
 
-const experiences: Experience[] = [
+const experiences = [
   {
     title: 'Software Engineer',
+    logo: <IconCloudPilotAI />,
     company: 'Cloudpilot',
     period: '2025.6 - Present',
     description: 'Took on my first remote role, independently responsible for developing various enterprise web applications using React, TypeScript, and Next.js.',
@@ -20,6 +23,7 @@ const experiences: Experience[] = [
   },
   {
     title: 'Frontend Intern',
+    logo: <Bytedance />,
     company: 'ByteDance',
     period: '2024.1 - 2024.5',
     description: 'Developed B2B products using technologies such as Vue, React, and micro-frontend architecture, while also driving the team\u2019s engineering efforts toward a Monorepo-based project structure.',
@@ -27,6 +31,7 @@ const experiences: Experience[] = [
   },
   {
     title: 'Frontend Intern',
+    logo: <Baidu />,
     company: 'Baidu',
     period: '2023.9 - 2023.12',
     description: 'Began my web development career by working on consumer-facing products using Vue and server-side rendering (SSR) technologies.',
@@ -41,17 +46,43 @@ export default function ProfessionJourney() {
     offset: ['start start', 'end end']
   });
 
-  // Experience 0 - left (Cloudpilot)
-  const exp0Opacity = useTransform(scrollYProgress, [0.15, 0.3], [0, 1]);
-  const exp0X = useTransform(scrollYProgress, [0.15, 0.3], [-80, 0]);
+  // --- Scroll-driven transforms for each experience ---
+  // Exp 0 (Cloudpilot): visible from start → fade out
+  const exp0LeftOp = useTransform(scrollYProgress, [0, 0, 0.24, 0.32], [1, 1, 1, 0]);
+  const exp0LeftX = useTransform(scrollYProgress, [0, 0, 0.24, 0.32], [0, 0, 0, -50]);
+  const exp0RightOp = useTransform(scrollYProgress, [0, 0, 0.24, 0.32], [1, 1, 1, 0]);
+  const exp0RightX = useTransform(scrollYProgress, [0, 0, 0.24, 0.32], [0, 0, 0, 50]);
 
-  // Experience 1 - right (ByteDance)
-  const exp1Opacity = useTransform(scrollYProgress, [0.35, 0.5], [0, 1]);
-  const exp1X = useTransform(scrollYProgress, [0.35, 0.5], [80, 0]);
+  // Exp 1 (ByteDance): appear → stay → fade out
+  const exp1LeftOp = useTransform(scrollYProgress, [0.36, 0.44, 0.54, 0.62], [0, 1, 1, 0]);
+  const exp1LeftX = useTransform(scrollYProgress, [0.36, 0.44, 0.54, 0.62], [-50, 0, 0, -50]);
+  const exp1RightOp = useTransform(scrollYProgress, [0.39, 0.46, 0.54, 0.62], [0, 1, 1, 0]);
+  const exp1RightX = useTransform(scrollYProgress, [0.39, 0.46, 0.54, 0.62], [50, 0, 0, 50]);
 
-  // Experience 2 - left (Baidu)
-  const exp2Opacity = useTransform(scrollYProgress, [0.55, 0.7], [0, 1]);
-  const exp2X = useTransform(scrollYProgress, [0.55, 0.7], [-80, 0]);
+  // Exp 2 (Baidu): appear → stays visible until exit
+  const exp2LeftOp = useTransform(scrollYProgress, [0.66, 0.74], [0, 1]);
+  const exp2LeftX = useTransform(scrollYProgress, [0.66, 0.74], [-50, 0]);
+  const exp2RightOp = useTransform(scrollYProgress, [0.69, 0.76], [0, 1]);
+  const exp2RightX = useTransform(scrollYProgress, [0.69, 0.76], [50, 0]);
+
+  // Track the active experience based on scroll progress
+  const [activeExpIndex, setActiveExpIndex] = useState(0);
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+    if (latest < 0.34) {
+      setActiveExpIndex(0);
+    } else if (latest < 0.64) {
+      setActiveExpIndex(1);
+    } else {
+      setActiveExpIndex(2);
+    }
+  });
+
+  // Group for easier iteration in JSX
+  const transforms = [
+    { leftOp: exp0LeftOp, leftX: exp0LeftX, rightOp: exp0RightOp, rightX: exp0RightX },
+    { leftOp: exp1LeftOp, leftX: exp1LeftX, rightOp: exp1RightOp, rightX: exp1RightX },
+    { leftOp: exp2LeftOp, leftX: exp2LeftX, rightOp: exp2RightOp, rightX: exp2RightX }
+  ];
 
   return (
     <>
@@ -77,16 +108,28 @@ export default function ProfessionJourney() {
               </h2>
             </div>
 
-            {/* Three-column layout */}
-            <div className="grid grid-cols-[1fr_auto_1fr] gap-8 items-center">
-              {/* Left column */}
-              <div className="space-y-6">
-                <motion.div style={{ opacity: exp0Opacity, x: exp0X }}>
-                  <ExperienceCard exp={experiences[0]} />
-                </motion.div>
-                <motion.div style={{ opacity: exp2Opacity, x: exp2X }}>
-                  <ExperienceCard exp={experiences[2]} />
-                </motion.div>
+            {/* Three-column: left info | ProfileCard | right info */}
+            <div className="grid grid-cols-[1fr_auto_1fr] gap-6 items-center">
+              {/* Left column: Title + Company + Description */}
+              <div className="relative h-[420px]">
+                {experiences.map((exp, i) => (
+                  <motion.div
+                    key={exp.company}
+                    className="absolute inset-0 flex flex-col justify-center items-end text-right pr-4"
+                    style={{ opacity: transforms[i].leftOp, x: transforms[i].leftX }}
+                  >
+                    <h3 className="text-2xl font-bold text-white leading-tight">
+                      {exp.title}
+                    </h3>
+                    <p className="text-lg text-gray-300 mt-1 flex items-center gap-2">
+                      {exp.logo && <span className="inline-flex shrink-0">{exp.logo}</span>}
+                      {exp.company}
+                    </p>
+                    <p className="text-lg text-gray-400 mt-1">
+                      {exp.period}
+                    </p>
+                  </motion.div>
+                ))}
               </div>
 
               {/* Center: ProfileCard - always visible */}
@@ -96,8 +139,8 @@ export default function ProfessionJourney() {
                   miniAvatarUrl="/ava.jpg"
                   iconUrl="/iconpattern.png"
                   grainUrl="/grain.webp"
-                  name="Benjamin"
-                  title="Software Engineer"
+                  name={experiences[activeExpIndex].company}
+                  title={experiences[activeExpIndex].title}
                   handle="qiushui7"
                   status="benjamin"
                   showUserInfo
@@ -106,11 +149,29 @@ export default function ProfessionJourney() {
                 />
               </div>
 
-              {/* Right column */}
-              <div className="flex items-center">
-                <motion.div className="w-full" style={{ opacity: exp1Opacity, x: exp1X }}>
-                  <ExperienceCard exp={experiences[1]} />
-                </motion.div>
+              {/* Right column: Period + Technologies */}
+              <div className="relative h-[420px]">
+                {experiences.map((exp, i) => (
+                  <motion.div
+                    key={exp.company}
+                    className="absolute inset-0 flex flex-col justify-center gap-5 pl-4"
+                    style={{ opacity: transforms[i].rightOp, x: transforms[i].rightX }}
+                  >
+                    <div className="flex flex-wrap gap-2">
+                      <p className="text-lg text-gray-400 mt-4 leading-relaxed max-w-sm">
+                        {exp.description}
+                      </p>
+                      {exp.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-xs bg-white/10 text-gray-300 px-3 py-1 rounded-full border border-white/10"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </div>
