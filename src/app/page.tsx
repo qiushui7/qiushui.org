@@ -38,7 +38,7 @@ export default function Home() {
         // eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml -- JSON-LD
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen text-white relative overflow-hidden">
+      <div className="min-h-screen text-white relative [overflow-x:clip]">
         <main className="relative z-10 px-4 md:px-8 lg:px-12">
           <Hero />
           <ProfessionJourney />
