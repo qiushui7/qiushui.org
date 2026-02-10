@@ -16,7 +16,7 @@ const experiences = [
   {
     title: 'Software Engineer',
     logo: <IconCloudPilotAI />,
-    company: 'Cloudpilot',
+    company: 'CloudPilot',
     period: '2025.6 - Present',
     description: 'Took on my first remote role, independently responsible for developing various enterprise web applications using React, TypeScript, and Next.js.',
     technologies: ['React', 'TypeScript', 'Next.js', 'SWR', 'Rechart']

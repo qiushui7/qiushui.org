@@ -86,7 +86,7 @@ export default function Hero() {
             {/* 引用文字 */}
             <div className="py-4">
               <blockquote className="text-lg lg:text-xl text-gray-300 italic border-l-2 border-white/30 pl-6">
-                &ldquo;Slow production defeats crazy internal competition&rdquo;
+                &ldquo;Deliberate pacing wins over chaotic competition.&rdquo;
               </blockquote>
             </div>
 
