@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         // eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml -- JSON-LD
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BlogPostClient post={post} mdxContent={<MDXContent source={post.content} />} />;
+      <BlogPostClient post={post} mdxContent={<MDXContent source={post.content} />} />
     </>
   );
 }

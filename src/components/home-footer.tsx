@@ -1,29 +1,40 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { SocialLinksRow } from './social-links';
+import { useRef } from 'react';
+import dynamic from 'next/dynamic';
+import { motion, useInView } from 'framer-motion';
+
+const FooterGlitchText = dynamic(() => import('./footer-glitch-text'), {
+  ssr: false
+});
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const footerRef = useRef<HTMLElement>(null);
+  const isInView = useInView(footerRef, { once: false, amount: 0.2 });
 
   return (
-    <footer className="relative z-10 bg-black/50 backdrop-blur-sm border-t border-gray-800/50 mt-20">
-      <div className="max-w-6xl mx-auto px-6 pt-8 pb-6">
-        <div className="flex flex-col items-center space-y-8">
-          {/* Social Links */}
-          <SocialLinksRow className="flex items-center space-x-6" />
-
-          {/* Copyright */}
-          <motion.div
-            className="text-center text-gray-500 text-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            <p>© {currentYear} qiushui. All rights reserved.</p>
-          </motion.div>
+    <footer
+      ref={footerRef}
+      className="sticky bottom-0 z-0 w-full overflow-hidden bg-black"
+    >
+      <motion.div
+        className="flex items-center justify-center px-4"
+        initial={{ opacity: 0, y: 60 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+        transition={{ duration: 0.8, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+        {/* Desktop: Three.js glitch effect */}
+        <div className="hidden md:block w-full">
+          <FooterGlitchText />
         </div>
-      </div>
+        {/* Mobile: plain text */}
+        <h2
+          className="block md:hidden select-none text-center font-bold uppercase leading-none tracking-wide text-white/70 w-full py-6"
+          style={{ fontSize: 'clamp(3rem, 20vw, 40vh)' }}
+        >
+          QIUSHUI
+        </h2>
+      </motion.div>
     </footer>
   );
 }
