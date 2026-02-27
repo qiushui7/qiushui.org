@@ -36,13 +36,18 @@ function renderTextCanvas(width: number, height: number): HTMLCanvasElement {
 
   ctx.font = `bold ${fontSize}px ${fontFamily}`;
   ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
+  ctx.textBaseline = 'alphabetic';
   ctx.clearRect(0, 0, width, height);
 
-  // Fill text
+  // Fill text – use actual bounding box to vertically center,
+  // because textBaseline:'middle' uses font-metric midpoint which
+  // varies across OS (Windows renders higher than macOS).
   ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
   ctx.letterSpacing = `${0.08 * fontSize}px`;
-  ctx.fillText(TEXT, width / 2, height / 2);
+  const metrics = ctx.measureText(TEXT);
+  const textHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+  const y = (height + textHeight) / 2 - metrics.actualBoundingBoxDescent;
+  ctx.fillText(TEXT, width / 2, y);
 
   return canvas;
 }
