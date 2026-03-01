@@ -44,6 +44,8 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     };
   }
 
+  const ogImageUrl = `https://www.qiushui.org/api/og?title=${post.title}&description=${post.excerpt}${post.coverImage ? `&image=${encodeURIComponent(post.coverImage)}` : ''}`;
+
   return {
     title: `${post.title} | qiushui`,
     description: post.excerpt || `${post.title} - A blog post by ${post.author}`,
@@ -56,7 +58,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       type: 'article',
       publishedTime: post.date,
       authors: [post.author],
-      images: `https://www.qiushui.org/api/og?title=${post.title}&description=${post.excerpt}`,
+      images: ogImageUrl,
       siteName: 'qiushui.org',
       url: `https://www.qiushui.org/blog/${category}/${slug}`
     },
@@ -64,7 +66,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt || `${post.title} - A blog post by ${post.author}`,
-      images: `https://www.qiushui.org/api/og?title=${post.title}&description=${post.excerpt}`
+      images: ogImageUrl
     }
   };
 }

@@ -13,6 +13,7 @@ export interface BlogPost {
   excerpt: string,
   tags: string[],
   content: string,
+  coverImage?: string,
   location?: string,
   views?: number
 }
@@ -66,6 +67,7 @@ export function getPostsByCategory(category: string): BlogPost[] {
         excerpt: data.excerpt || '',
         tags: data.tags || [],
         content,
+        coverImage: data.coverImage,
         location: data.location,
         views: 0
       };
@@ -114,6 +116,7 @@ export function getPostBySlug(category: string, slug: string): BlogPost | null {
       excerpt: data.excerpt || '',
       tags: data.tags || [],
       content,
+      coverImage: data.coverImage,
       location: data.location,
       views: 0
     };
