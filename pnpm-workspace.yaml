@@ -1,0 +1,26 @@
+allowBuilds:
+  '@tailwindcss/oxide@4.1.10': true
+  '@vercel/speed-insights': false
+  'esbuild@0.25.10 || 0.28.1': true
+  'sharp@0.34.5': true
+  'unrs-resolver@1.9.1 || 1.11.1': true
+
+overrides:
+  '@babel/core@<=7.29.0': 7.29.7
+  '@eslint/plugin-kit@<0.3.4': 0.3.5
+  'ajv@<6.14.0': 6.15.0
+  'brace-expansion@<1.1.13': 1.1.13
+  'brace-expansion@>=2.0.0 <2.0.3': 2.0.3
+  'defu@<6.1.5': 6.1.7
+  'esbuild@<=0.24.2': 0.25.10
+  'flatted@<3.4.2': 3.4.2
+  'js-yaml@>=3 <3.15.0': 3.15.0
+  'js-yaml@>=4 <4.2.0': 4.3.0
+  'mdast-util-to-hast@>=13 <13.2.1': 13.2.1
+  'minimatch@<3.1.4': 3.1.4
+  'minimatch@>=9 <9.0.7': 9.0.9
+  'picomatch@>=2 <2.3.2': 2.3.2
+  'picomatch@>=4 <4.0.4': 4.0.5
+  'postcss@>=8 <8.5.10': 8.5.19
+  'tar@>=7 <7.5.16': 7.5.20
+  'yaml@>=2 <2.8.3': 2.9.0

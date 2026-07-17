@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useCallback } from 'react';
-import type { WebGLRenderer, Scene, Camera, ShaderMaterial, CanvasTexture, Mesh, BufferGeometry } from 'three';
+import type { WebGLRenderer, Scene, Camera, ShaderMaterial, CanvasTexture, Mesh } from 'three';
 import { vertexShader, fragmentShader } from './footer-glitch-shaders';
 
 const TEXT = 'QIUSHUI';
@@ -244,7 +244,7 @@ export default function FooterGlitchText() {
         state.renderer.dispose();
         state.texture.dispose();
         state.material.dispose();
-        (state.mesh.geometry as BufferGeometry).dispose();
+        state.mesh.geometry.dispose();
         if (state.renderer.domElement.parentNode) {
           state.renderer.domElement.parentNode.removeChild(state.renderer.domElement);
         }

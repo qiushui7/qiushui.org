@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import type { ComponentType, CSSProperties } from 'react';
+import { memo, useEffect, useRef, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import './profile-card.css';
 
@@ -58,7 +59,7 @@ function easeInOutCubic(x: number): number {
   return x < 0.5 ? 4 * x * x * x : 1 - ((-2 * x + 2) ** 3) / 2;
 }
 
-const ProfileCardComponent: React.ComponentType<ProfileCardProps> = ({
+const ProfileCardComponent: ComponentType<ProfileCardProps> = ({
   avatarUrl = '<Placeholder for avatar URL>',
   iconUrl = '<Placeholder for icon URL>',
   grainUrl = '<Placeholder for grain URL>',
@@ -251,14 +252,14 @@ const ProfileCardComponent: React.ComponentType<ProfileCardProps> = ({
 
   const cardStyle = useMemo(
     () => {
-      const style: React.CSSProperties = {
+      const style: CSSProperties = {
         '--icon': iconUrl ? `url(${iconUrl})` : 'none',
         '--grain': grainUrl ? `url(${grainUrl})` : 'none',
         '--behind-gradient': showBehindGradient
           ? (behindGradient ?? DEFAULT_BEHIND_GRADIENT)
           : 'none'
         // "--inner-gradient": innerGradient ?? DEFAULT_INNER_GRADIENT,
-      } as React.CSSProperties;
+      } as CSSProperties;
 
       if (width || height) {
         const cardWidth = typeof width === 'number' ? `${width}px` : width;
@@ -350,6 +351,6 @@ const ProfileCardComponent: React.ComponentType<ProfileCardProps> = ({
   );
 };
 
-const ProfileCard = React.memo(ProfileCardComponent);
+const ProfileCard = memo(ProfileCardComponent);
 
 export default ProfileCard;
