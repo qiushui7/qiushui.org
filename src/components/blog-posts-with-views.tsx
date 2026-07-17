@@ -36,7 +36,7 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="mx-auto flex max-w-4xl flex-col gap-6">
       {filteredPosts.map((post, index) => {
         const postId = `${post.category}/${post.slug}`;
         const views = viewsData[postId] || 0;
@@ -44,13 +44,13 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
         return (
           <motion.article
             key={postId}
-            className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-lg p-6 hover:bg-white/15 transition-all duration-300 h-full flex flex-col"
+            className="flex w-full flex-col rounded-lg border border-white/20 bg-black/20 px-6 py-4 backdrop-blur-sm transition-all duration-300 hover:bg-white/15 md:px-7 md:py-5"
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
           >
-            <div className="mb-4 flex-grow">
-              <div className="flex items-center justify-between mb-3">
+            <div className="mb-3 flex-grow">
+              <div className="mb-2 flex items-center justify-between">
                 <span className="text-xs text-gray-400 uppercase tracking-wide">
                   {getCategoryDisplayName(post.category)}
                 </span>
@@ -69,7 +69,7 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
                   )} */}
                 </div>
               </div>
-              <h2 className="text-xl font-semibold mb-3 line-clamp-2">
+              <h2 className="mb-2 line-clamp-2 text-xl font-semibold">
                 {post.title}
               </h2>
               {post.excerpt && (
@@ -80,7 +80,7 @@ export default function BlogPostsWithViews({ posts, selectedCategory }: BlogPost
             </div>
 
             {post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
+              <div className="mb-3 flex flex-wrap gap-2">
                 {post.tags.slice(0, 3).map((tag) => (
                   <span
                     key={tag}

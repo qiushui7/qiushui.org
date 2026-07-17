@@ -100,7 +100,7 @@ export default function BlogPageClient({ blogData }: BlogPageClientProps) {
           ))}
         </motion.div>
 
-        {/* Blog Posts Grid */}
+        {/* Blog Posts List */}
         <BlogPostsWithViews posts={blogData.posts} selectedCategory={selectedCategory} />
 
         {/* Empty State */}
